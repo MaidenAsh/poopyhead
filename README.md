@@ -1,2 +1,2 @@
 # poopyhead
-A card game made with javascript, based off the game Sh*thead.
+A card game made with html, css and javascript, based off the game Sh*thead.
