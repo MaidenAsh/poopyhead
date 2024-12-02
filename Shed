@@ -10,6 +10,7 @@
 <body>
     
     <div class="deck">
+        
         <div id="deck"></div>
     </div>
 </body>
