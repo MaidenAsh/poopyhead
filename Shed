@@ -35,7 +35,7 @@
 
             for (let i = 0; i<suits.length; i++) {
                 for (let j = 0; j<values.length; j++) {
-                    deck.push({Value: values[j], Suit: suits.[i]})
+                    deck.push({Value: values[j], Suit: suits[i]})
                 }
             }
             
@@ -49,6 +49,9 @@
             }
             return deck
         }
+
+        let test = createDeck()
+        console.log(test)
     </script>
 </body>
 </html>
