@@ -4,22 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shed</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-image: url(bg2.jpg);
-        }
-        #shedCanvas {
-            border: 1px solid black;
-            border-radius: 15px;
-            background-image: url(bg.jpg);
-            background-size: 800px 800px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <canvas id="shedCanvas" width="800" height="800"></canvas>
