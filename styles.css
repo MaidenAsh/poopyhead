@@ -1,6 +1,7 @@
 body {
     display: flex;
-    
+    justify-content: center;
+    align-items: center;
     height: 100vh;
     margin: 0;
     background-image: url(bg2.jpg);
