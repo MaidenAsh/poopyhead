@@ -11,12 +11,12 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-image: url(bg2.jpg);
+            background-image: url(images/bg2.jpg);
         }
         #shedCanvas {
             border: 1px solid black;
             border-radius: 15px;
-            background-image: url(bg.jpg);
+            background-image: url(images/bg.jpg);
             background-size: 800px 800px;
         }
     </style>
@@ -43,6 +43,11 @@
             let deck = createDeck();
             deal(deck);
             draw(deck);
+        }
+
+        function gameLoop {
+            draw(deck);
+            renderGame();
         }
 
         function createDeck() {
