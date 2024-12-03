@@ -11,8 +11,8 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\test2.js"
-            "runtimeExecutable": "node"
+            "program": "${workspaceFolder}\\test2.js",
+            "console": "integratedTerminal"
         }
     ]
 }

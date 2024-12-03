@@ -7,11 +7,11 @@ function createDeck() {
 
     for (let i = 0; i<suits.length; i++) {
         for (let j = 0; j<values.length; j++) {
-            deck.push({Value: values[j], Suit: suits[i]})
-            }
+            deck.push({Value: values[j], Suit: suits[i]});
+        }
     }
             
-    for (let i = 0; i<1000; i++) {
+    for (let x = 0; x<1000; x++) {
         let positionA = Math.floor(Math.random()*deck.length)
         let positionB = Math.floor(Math.random()*deck.length)
         let mid = deck[positionA]
