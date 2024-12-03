@@ -1,6 +1,6 @@
 
 var suits = ["spades", "diamonds", "clubs", "hearts"];
-var values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+var values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
         
 function createDeck() {
     let deck = []
@@ -10,6 +10,9 @@ function createDeck() {
             deck.push({Value: values[j], Suit: suits[i]});
         }
     }
+
+    deck.push({Value: "Joker", Suit: "red"})
+    deck.push({Value: "Joker", Suit: "black"})
             
     for (let x = 0; x<1000; x++) {
         let positionA = Math.floor(Math.random()*deck.length)
@@ -17,7 +20,7 @@ function createDeck() {
         let mid = deck[positionA]
                 
         deck[positionA] = deck[positionB]
-        deck[positionB] = deck[mid] 
+        deck[positionB] = mid 
     }
     return deck
 }

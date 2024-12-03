@@ -32,3 +32,5 @@ Jokers are magical. They act like an 8, but additionally they prevent magical ca
 
 9s are non-magical, but reverse the turn order. 9s cannot be played in succession, but multiple 9s can be played in one hand.
 
+The following article was a huge help in getting this projects started.
+https://www.thatsoftwaredude.com/content/6196/coding-a-card-deck-in-javascript 
