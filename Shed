@@ -24,7 +24,7 @@
 <body>
     <canvas id="shedCanvas" width="800" height="800"></canvas>
     <script>
-        const canvas = document.getElementById('gameCanvas');
+        const canvas = document.getElementById('shedCanvas');
         const ctx = canvas.getContext('2d');
 
         var suits = ["spades", "diamonds", "clubs", "hearts"];
@@ -97,6 +97,7 @@
 
         initGame();
 
+        
     </script>
 </body>
 </html>
