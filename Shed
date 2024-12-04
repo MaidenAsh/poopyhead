@@ -23,9 +23,88 @@
 </head>
 <body>
     <canvas id="shedCanvas" width="800" height="800"></canvas>
+
+    <!--Every card image is inside this div-->
+    <div style="display:none;" onload="initGame()">
+        <img id="spades2" src="images/spades2.png";/>
+        <img id="spades3" src="images/spades3.png";/>
+        <img id="spades4" src="images/spades4.png";/>
+        <img id="spades5" src="images/spades5.png";/>
+        <img id="spades6" src="images/spades6.png";/>
+        <img id="spades7" src="images/spades7.png";/>
+        <img id="spades8" src="images/spades8.png";/>
+        <img id="spades9" src="images/spades9.png";/>
+        <img id="spades10" src="images/spades10.png";/>
+        <img id="spadesJ" src="images/spadesJ.png";/>
+        <img id="spadesQ" src="images/spadesQ.png";/>
+        <img id="spadesK" src="images/spadesK.png";/>
+        <img id="spadesA" src="images/spadesA.png";/>
+        
+        <img id="clubs2" src="images/clubs2.png";/>
+        <img id="clubs3" src="images/clubs3.png";/>
+        <img id="clubs4" src="images/clubs4.png";/>
+        <img id="clubs5" src="images/clubs5.png";/>
+        <img id="clubs6" src="images/clubs6.png";/>
+        <img id="clubs7" src="images/clubs7.png";/>
+        <img id="clubs8" src="images/clubs8.png";/>
+        <img id="clubs9" src="images/clubs9.png";/>
+        <img id="clubs10" src="images/clubs10.png";/>
+        <img id="clubsJ" src="images/clubsJ.png";/>
+        <img id="clubsQ" src="images/clubsQ.png";/>
+        <img id="clubsK" src="images/clubsK.png";/>
+        <img id="clubsA" src="images/clubsA.png";/>
+
+        <img id="diamonds2" src="images/diamonds2.png";/>
+        <img id="diamonds2" src="images/diamonds3.png";/>
+        <img id="diamonds2" src="images/diamonds4.png";/>
+        <img id="diamonds2" src="images/diamonds5.png";/>
+        <img id="diamonds2" src="images/diamonds6.png";/>
+        <img id="diamonds2" src="images/diamonds7.png";/>
+        <img id="diamonds2" src="images/diamonds8.png";/>
+        <img id="diamonds2" src="images/diamonds9.png";/>
+        <img id="diamonds2" src="images/diamonds10.png";/>
+        <img id="diamonds2" src="images/diamondsJ.png";/>
+        <img id="diamonds2" src="images/diamondsQ.png";/>
+        <img id="diamonds2" src="images/diamondsK.png";/>
+        <img id="diamonds2" src="images/diamondsA.png";/>
+
+        <img id="hearts2" src="images/hearts2.png";/>
+        <img id="hearts3" src="images/hearts3.png";/>
+        <img id="hearts4" src="images/hearts4.png";/>
+        <img id="hearts5" src="images/hearts5.png";/>
+        <img id="hearts6" src="images/hearts6.png";/>
+        <img id="hearts7" src="images/hearts7.png";/>
+        <img id="hearts8" src="images/hearts8.png";/>
+        <img id="hearts9" src="images/hearts9.png";/>
+        <img id="hearts10" src="images/hearts10.png";/>
+        <img id="heartsJ" src="images/heartsJ.png";/>
+        <img id="heartsQ" src="images/heartsQ.png";/>
+        <img id="heartsK" src="images/heartsK.png";/>
+        <img id="heartsA" src="images/heartsA.png";/>
+
+        <img id="Jokerred" src="images/Jokerred.png";/>
+        <img id="Jokerblack" src="images/Jokerblack.png";/>
+    </div>
+    
     <script>
+        async function preload() {
+        // Wait for all images to be loaded:
+            await Promise.all(
+                Array.from(document.images).map(
+                    (image) =>
+                        new Promise((resolve) => image.addEventListener("load", resolve)),
+                ),
+            );
+        const ctx = document.getElementById("shedCanvas").getContext("2d");
+        // call drawImage() as usual
+        }
+        preload();
+    
+
         const canvas = document.getElementById('shedCanvas');
         const ctx = canvas.getContext('2d');
+        
+        ctx.drawImage(document.getElementById("spades2"), 200, 662);
 
         var suits = ["spades", "diamonds", "clubs", "hearts"];
         var values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]; 
@@ -45,7 +124,7 @@
             draw(deck);
         }
 
-        function gameLoop {
+        function gameLoop() {
             draw(deck);
             renderGame();
         }
@@ -101,7 +180,6 @@
         }
 
         initGame();
-
         
     </script>
 </body>
