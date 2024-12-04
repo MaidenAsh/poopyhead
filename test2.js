@@ -68,3 +68,13 @@
         }
 
         initGame();
+
+        function formString(card) {
+            let string = ''
+            return string += card.Suit + card.Value + '.png'
+        }
+
+        let deck = createDeck()
+
+        console.log(deck[0])
+        console.log(formString(deck[0]))

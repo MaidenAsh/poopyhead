@@ -23,9 +23,8 @@
 </head>
 <body>
     <canvas id="shedCanvas" width="800" height="800"></canvas>
-
     <!--Every card image is inside this div-->
-    <div style="display:none;">
+    <div style="display:none;" onload="renderCards()">
         <img id="spades2" src="images/spades2.png";/>
         <img id="spades3" src="images/spades3.png";/>
         <img id="spades4" src="images/spades4.png";/>
@@ -84,13 +83,18 @@
 
         <img id="Jokerred" src="images/Jokerred.png";/>
         <img id="Jokerblack" src="images/Jokerblack.png";/>
+
+        <img id="redBack" src="images/Back Red.png";/>
+        <img id="blueback" src="images/Back Blue.png";/>
     </div>
     
     <script>
         const canvas = document.getElementById('shedCanvas');
         const ctx = canvas.getContext('2d');
 
-        ctx.drawImage(document.getElementById("spades2"), 200, 662);
+        ctx.drawImage(document.getElementById("spades2"), 200, 662, 80, 120);
+        ctx.drawImage(document.getElementById("redBack"), 240, 510, 80, 120)  
+
 
         var suits = ["spades", "diamonds", "clubs", "hearts"];
         var values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]; 
@@ -112,7 +116,7 @@
 
         function gameLoop() {
             draw(deck);
-            renderGame();
+            renderCards();
         }
 
         function createDeck() {
@@ -147,7 +151,7 @@
             }
             while (upcard1.length<3) {
                 upcard1.push(deck.pop())
-            }
+            }   
             while (upcard2.length<3) {
                 upcard2.push(deck.pop())
             }
@@ -165,8 +169,18 @@
             }
         }
 
-        initGame();
+        function formString(card) {
+            let string = ''
+            return string += card.Suit + card.Value + '.png'
+        }
         
+        function renderCards() {
+            for (let i = 0; i<downcard1.length; i++) {  
+                let x = 240+(i*120)
+                ctx.drawImage(document.getElementById("redBack"), 240, 510, cwidth, cheight)
+            }
+        }                                                
+
     </script>
 </body>
 </html>
