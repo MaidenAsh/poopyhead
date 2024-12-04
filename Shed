@@ -25,7 +25,7 @@
     <canvas id="shedCanvas" width="800" height="800"></canvas>
 
     <!--Every card image is inside this div-->
-    <div style="display:none;" onload="initGame()">
+    <div style="display:none;" onload="script">
         <img id="spades2" src="images/spades2.png";/>
         <img id="spades3" src="images/spades3.png";/>
         <img id="spades4" src="images/spades4.png";/>
@@ -99,11 +99,10 @@
         // call drawImage() as usual
         }
         preload();
-    
 
         const canvas = document.getElementById('shedCanvas');
         const ctx = canvas.getContext('2d');
-        
+
         ctx.drawImage(document.getElementById("spades2"), 200, 662);
 
         var suits = ["spades", "diamonds", "clubs", "hearts"];
