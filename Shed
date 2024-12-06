@@ -106,7 +106,7 @@
         let handcard1 = [];
         let handcard2 = [];
         let selected = [];
-        let stack = []; 
+        let stack = [];
         let cw = 80;
         let ch = 120;
 
@@ -115,12 +115,13 @@
             let deck = createDeck();
             deal(deck);
             draw(deck);
-            renderCards()
+            renderCards(deck);
+            ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
         }
 
         function gameLoop() {
             draw(deck);
-            renderCards();
+            renderCards(deck);
         }
 
         function createDeck() {
@@ -178,7 +179,7 @@
                 return string += card.Suit + card.Value
         }
                 
-        function renderCards() {
+        function renderCards(deck) {
             for (let i = 0; i<downcard1.length; i++) {
                 let x = i*120 + 240
                 ctx.drawImage(document.getElementById("redBack"), x, 510, 80, 120)
@@ -220,9 +221,10 @@
             }
             
             for (let i = 0; i<deck.length; i++) { 
-                let y = i*2 + 340
-                ctx.drawImage(document.getElementById("redBack"), 300, y, 80, 120)
+                let y = 340 - i/4;
+                ctx.drawImage(document.getElementById("redBack"), 300, y, 80, 120);
             }
+                        
 
         }          
   
