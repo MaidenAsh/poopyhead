@@ -165,7 +165,7 @@
             if (deck.length == 0) {
                 return
             }
-            while (handcard1.length<3) {
+            while (handcard1.length<6) {
                 handcard1.push(deck.pop())
             }
             while (handcard2.length<3) {
@@ -200,8 +200,17 @@
                 let x = i*120 + 240
                 ctx.drawImage(document.getElementById(s), x, 170, 80, 120)
             } 
+
+            for (let i = 0; i<handcard1.length; i++) {
+                let s = formString(handcard1[i])
+                let interval = 80 + ((400-(80*handcard1.length))/(handcard1.length + 1))
+                let initial = 200 + ((400-(80*handcard1.length))/(handcard1.length + 1))
+                let x = i*interval + initial
+                ctx.drawImage(document.getElementById(s), x, 680, 80, 120)
+            } 
+
         }          
-                            
+  
         
 
         initGame();
