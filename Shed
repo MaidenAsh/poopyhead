@@ -193,13 +193,13 @@
             for (let i = 0; i<upcard1.length; i++) {
                 let s = formString(upcard1[i])
                 let x = i*120 + 240
-                ctx.drawImage(document.getElementById(s), x, 510, 80, 120)
+                ctx.drawImage(document.getElementById(s), x, 505, 80, 120)
             }    
 
             for (let i = 0; i<upcard2.length; i++) {
                 let s = formString(upcard2[i])
                 let x = i*120 + 240
-                ctx.drawImage(document.getElementById(s), x, 170, 80, 120)
+                ctx.drawImage(document.getElementById(s), x, 165, 80, 120)
             } 
 
             for (let i = 0; i<handcard1.length; i++) {
@@ -228,11 +228,9 @@
             for (let i = 0; i<stack.length; i++) { 
                 let s = formString(stack[i])
                 let y = 340 - i/4;
-                ctx.drawImage(document.getElementById("s"), 420, y, 80, 120);
+                ctx.drawImage(document.getElementById(s), 420, y, 80, 120);
             }
         }          
-  
-        
 
         initGame();
     </script>
