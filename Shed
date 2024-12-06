@@ -21,10 +21,10 @@
         }
     </style>
 </head>
-<body>
+<body onload="initGame()">
     <canvas id="shedCanvas" width="800" height="800"></canvas>
     <!--Every card image is inside this div-->
-    <div style="display:none;" onload="renderCards()">
+    <div style="display:none;">
         <img id="spades2" src="images/spades2.png";/>
         <img id="spades3" src="images/spades3.png";/>
         <img id="spades4" src="images/spades4.png";/>
@@ -54,18 +54,18 @@
         <img id="clubsA" src="images/clubsA.png";/>
 
         <img id="diamonds2" src="images/diamonds2.png";/>
-        <img id="diamonds2" src="images/diamonds3.png";/>
-        <img id="diamonds2" src="images/diamonds4.png";/>
-        <img id="diamonds2" src="images/diamonds5.png";/>
-        <img id="diamonds2" src="images/diamonds6.png";/>
-        <img id="diamonds2" src="images/diamonds7.png";/>
-        <img id="diamonds2" src="images/diamonds8.png";/>
-        <img id="diamonds2" src="images/diamonds9.png";/>
-        <img id="diamonds2" src="images/diamonds10.png";/>
-        <img id="diamonds2" src="images/diamondsJ.png";/>
-        <img id="diamonds2" src="images/diamondsQ.png";/>
-        <img id="diamonds2" src="images/diamondsK.png";/>
-        <img id="diamonds2" src="images/diamondsA.png";/>
+        <img id="diamonds3" src="images/diamonds3.png";/>
+        <img id="diamonds4" src="images/diamonds4.png";/>
+        <img id="diamonds5" src="images/diamonds5.png";/>
+        <img id="diamonds6" src="images/diamonds6.png";/>
+        <img id="diamonds7" src="images/diamonds7.png";/>
+        <img id="diamonds8" src="images/diamonds8.png";/>
+        <img id="diamonds9" src="images/diamonds9.png";/>
+        <img id="diamonds10" src="images/diamonds10.png";/>
+        <img id="diamondsJ" src="images/diamondsJ.png";/>
+        <img id="diamondsQ" src="images/diamondsQ.png";/>
+        <img id="diamondsK" src="images/diamondsK.png";/>
+        <img id="diamondsA" src="images/diamondsA.png";/>
 
         <img id="hearts2" src="images/hearts2.png";/>
         <img id="hearts3" src="images/hearts3.png";/>
@@ -81,21 +81,21 @@
         <img id="heartsK" src="images/heartsK.png";/>
         <img id="heartsA" src="images/heartsA.png";/>
 
-        <img id="Jokerred" src="images/Jokerred.png";/>
-        <img id="Jokerblack" src="images/Jokerblack.png";/>
+        <img id="redJoker" src="images/redJoker.png";/>
+        <img id="blackJoker" src="images/blackJoker.png";/>
 
         <img id="redBack" src="images/Back Red.png";/>
-        <img id="blueback" src="images/Back Blue.png";/>
+        <img id="blueBack" src="images/Back Blue.png";/>
     </div>
-    
     <script>
         const canvas = document.getElementById('shedCanvas');
         const ctx = canvas.getContext('2d');
 
-        ctx.drawImage(document.getElementById("spades2"), 200, 662, 80, 120);
-        ctx.drawImage(document.getElementById("redBack"), 240, 510, 80, 120)  
-
-
+        //function test() {
+           // ctx.drawImage(document.getElementById("spades2"), 200, 662, 80, 120);
+           // ctx.drawImage(document.getElementById("redBack"), 240, 510, 80, 120);  
+       // }
+        
         var suits = ["spades", "diamonds", "clubs", "hearts"];
         var values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]; 
         let gameRunning;
@@ -105,13 +105,17 @@
         let upcard2 = [];
         let handcard1 = [];
         let handcard2 = [];
+        let selected = [];
         let stack = []; 
+        let cw = 80;
+        let ch = 120;
 
         function initGame() {
             gameRunning = true;
             let deck = createDeck();
             deal(deck);
             draw(deck);
+            renderCards()
         }
 
         function gameLoop() {
@@ -130,12 +134,12 @@
 
             deck.push({Value: "Joker", Suit: "red"})
             deck.push({Value: "Joker", Suit: "black"})
-            
+                    
             for (let i = 0; i<1000; i++) {
                 let positionA = Math.floor(Math.random()*deck.length)
                 let positionB = Math.floor(Math.random()*deck.length)
                 let mid = deck[positionA]
-                
+                        
                 deck[positionA] = deck[positionB]
                 deck[positionB] = mid
             }
@@ -171,16 +175,36 @@
 
         function formString(card) {
             let string = ''
-            return string += card.Suit + card.Value + '.png'
+                return string += card.Suit + card.Value
         }
-        
+                
         function renderCards() {
-            for (let i = 0; i<downcard1.length; i++) {  
-                let x = 240+(i*120)
-                ctx.drawImage(document.getElementById("redBack"), 240, 510, cwidth, cheight)
-            }
-        }                                                
+            for (let i = 0; i<downcard1.length; i++) {
+                let x = i*120 + 240
+                ctx.drawImage(document.getElementById("redBack"), x, 510, 80, 120)
+            }     
+                
+            for (let i = 0; i<downcard2.length; i++) {
+                let x = i*120 + 240
+                ctx.drawImage(document.getElementById("blueBack"), x, 170, 80, 120)
+            }    
+            
+            for (let i = 0; i<upcard1.length; i++) {
+                let s = formString(upcard1[i])
+                let x = i*120 + 240
+                ctx.drawImage(document.getElementById(s), x, 510, 80, 120)
+            }    
 
+            for (let i = 0; i<upcard2.length; i++) {
+                let s = formString(upcard2[i])
+                let x = i*120 + 240
+                ctx.drawImage(document.getElementById(s), x, 170, 80, 120)
+            } 
+        }          
+                            
+        
+
+        initGame();
     </script>
 </body>
 </html>
