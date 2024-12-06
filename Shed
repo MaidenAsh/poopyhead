@@ -225,7 +225,11 @@
                 ctx.drawImage(document.getElementById("redBack"), 300, y, 80, 120);
             }
                         
-
+            for (let i = 0; i<stack.length; i++) { 
+                let s = formString(stack[i])
+                let y = 340 - i/4;
+                ctx.drawImage(document.getElementById("s"), 420, y, 80, 120);
+            }
         }          
   
         
