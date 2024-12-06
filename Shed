@@ -165,7 +165,7 @@
             if (deck.length == 0) {
                 return
             }
-            while (handcard1.length<6) {
+            while (handcard1.length<3) {
                 handcard1.push(deck.pop())
             }
             while (handcard2.length<3) {
@@ -203,11 +203,26 @@
 
             for (let i = 0; i<handcard1.length; i++) {
                 let s = formString(handcard1[i])
-                let interval = 80 + ((400-(80*handcard1.length))/(handcard1.length + 1))
-                let initial = 200 + ((400-(80*handcard1.length))/(handcard1.length + 1))
+                console.log(handcard1[i])
+                let gap = ((400-(80*handcard1.length))/(handcard1.length + 1))
+                let interval = 80 + gap
+                let initial = 200 + gap
                 let x = i*interval + initial
                 ctx.drawImage(document.getElementById(s), x, 680, 80, 120)
             } 
+
+            for (let i = 0; i<handcard2.length; i++) { 
+                let gap = ((400-(80*handcard2.length))/(handcard2.length + 1))
+                let interval = 80 + gap
+                let initial = 200 + gap
+                let x = i*interval + initial
+                ctx.drawImage(document.getElementById("blueBack"), x, 0, 80, 120)
+            }
+            
+            for (let i = 0; i<deck.length; i++) { 
+                let y = i*2 + 340
+                ctx.drawImage(document.getElementById("redBack"), 300, y, 80, 120)
+            }
 
         }          
   
