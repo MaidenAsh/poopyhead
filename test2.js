@@ -25,8 +25,8 @@
            deal(deck);
            draw(deck);
            renderCards();
-           console.log(deck);
-           console.log(deck.length);
+           deck[0].Magical = false 
+           console.log(deck[0])
        }
 
        function gameLoop() {
@@ -114,7 +114,6 @@
 
            for (let i = 0; i<handcard1.length; i++) {
                let s = formString(handcard1[i])
-               console.log(handcard1[i])
                let gap = ((400-(80*handcard1.length))/(handcard1.length + 1))
                let interval = 80 + gap
                let initial = 200 + gap
@@ -123,7 +122,6 @@
            } 
 
            for (let i = 0; i<handcard2.length; i++) { 
-            console.log(handcard2[i])
                let gap = ((400-(80*handcard2.length))/(handcard2.length + 1))
                let interval = 80 + gap
                let initial = 200 + gap
