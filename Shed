@@ -107,8 +107,6 @@
         let handcard2 = [];
         let selected = [];
         let stack = [];
-        let cw = 80;
-        let ch = 120;
 
         function initGame() {
             gameRunning = true;
@@ -193,12 +191,10 @@
         function renderCards(deck) {
             for (let i = 0; i<downcard1.length; i++) {
                 let x = i*120 + 240
-                if (upcard1.length == 0) {
-                    downcard1[i].x1 = x
-                    downcard1[i].x2 = x + 80
-                    downcard1[i].y1 = 510
-                    downcard1[i].y2 = 630
-                }
+                downcard1[i].x1 = x
+                downcard1[i].x2 = x + 80
+                downcard1[i].y1 = 510
+                downcard1[i].y2 = 630
                 ctx.drawImage(document.getElementById("redBack"), x, 510, 80, 120)
             }     
                 
@@ -210,12 +206,10 @@
             for (let i = 0; i<upcard1.length; i++) {
                 let s = formString(upcard1[i])
                 let x = i*120 + 240
-                if (handcard1.length == 0 && deck.length == 0) {
-                    upcard1[i].x1 = x
-                    upcard1[i].x2 = x + 80
-                    upcard1[i].y1 = 505
-                    upcard1[i].y2 = 625
-                }
+                upcard1[i].x1 = x
+                upcard1[i].x2 = x + 80
+                upcard1[i].y1 = 505
+                upcard1[i].y2 = 625
                 ctx.drawImage(document.getElementById(s), x, 505, 80, 120)
             }    
 
@@ -262,6 +256,10 @@
                 ctx.drawImage(document.getElementById(s), 420, y, 80, 120);
             }
         }          
+
+        function selectCards() {
+            
+        }
 
         initGame();
     </script>
