@@ -129,12 +129,23 @@
 
             for (let i = 0; i<suits.length; i++) {
                 for (let j = 0; j<values.length; j++) {
-                    deck.push({Value: values[j], Suit: suits[i]})
+                    deck.push({Value: values[j], Suit: suits[i], Magical: false, x1: 0, x2: 0, y1: 0, y2: 0})
                 }
             }
 
-            deck.push({Value: "Joker", Suit: "red"})
-            deck.push({Value: "Joker", Suit: "black"})
+            for (let i = 0; i<deck.length; i++) {
+                switch(deck[i].Value) {
+                    case "2":
+                    case "7":
+                    case "8":
+                    case "10":
+                        deck[i].Magical = true
+                        break;
+                }
+            }
+
+            deck.push({Value: "Joker", Suit: "red", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0})
+            deck.push({Value: "Joker", Suit: "black", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0})
                     
             for (let i = 0; i<1000; i++) {
                 let positionA = Math.floor(Math.random()*deck.length)
@@ -176,12 +187,18 @@
 
         function formString(card) {
             let string = ''
-                return string += card.Suit + card.Value
+            return string += card.Suit + card.Value
         }
                 
         function renderCards(deck) {
             for (let i = 0; i<downcard1.length; i++) {
                 let x = i*120 + 240
+                if (upcard1.length == 0) {
+                    downcard1[i].x1 = x
+                    downcard1[i].x2 = x + 80
+                    downcard1[i].y1 = 510
+                    downcard1[i].y2 = 630
+                }
                 ctx.drawImage(document.getElementById("redBack"), x, 510, 80, 120)
             }     
                 
@@ -193,6 +210,12 @@
             for (let i = 0; i<upcard1.length; i++) {
                 let s = formString(upcard1[i])
                 let x = i*120 + 240
+                if (handcard1.length == 0 && deck.length == 0) {
+                    upcard1[i].x1 = x
+                    upcard1[i].x2 = x + 80
+                    upcard1[i].y1 = 505
+                    upcard1[i].y2 = 625
+                }
                 ctx.drawImage(document.getElementById(s), x, 505, 80, 120)
             }    
 
@@ -204,11 +227,19 @@
 
             for (let i = 0; i<handcard1.length; i++) {
                 let s = formString(handcard1[i])
-                console.log(handcard1[i])
                 let gap = ((400-(80*handcard1.length))/(handcard1.length + 1))
                 let interval = 80 + gap
                 let initial = 200 + gap
                 let x = i*interval + initial
+                handcard1[i].x1 = x
+                handcard1[i].x2 = x + 80
+                if (i > 0) {
+                    if (handcard1[i-1].x2 > x) {
+                        handcard1[i-1].x2 = x-3
+                    }
+                } 
+                handcard1[i].y1 = 680
+                handcard1[i].y2 = 800
                 ctx.drawImage(document.getElementById(s), x, 680, 80, 120)
             } 
 

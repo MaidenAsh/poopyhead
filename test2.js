@@ -25,8 +25,7 @@
            deal(deck);
            draw(deck);
            renderCards();
-           deck[0].Magical = false 
-           console.log(deck[0])
+           console.log(deck)
        }
 
        function gameLoop() {
@@ -35,28 +34,38 @@
        }
 
        function createDeck() {
-           let deck = []
+        let deck = []
 
-           for (let i = 0; i<suits.length; i++) {
-               for (let j = 0; j<values.length; j++) {
-                   deck.push({Value: values[j], Suit: suits[i]})
-               }
-           }
+        for (let i = 0; i<suits.length; i++) {
+            for (let j = 0; j<values.length; j++) {
+                deck.push({Value: values[j], Suit: suits[i], Magical: false, x: 0, y: 0})
+            }
+        }
 
-           deck.push({Value: "Joker", Suit: "red"})
-           deck.push({Value: "Joker", Suit: "black"})
-                   
-           for (let i = 0; i<1000; i++) {
-               let positionA = Math.floor(Math.random()*deck.length)
-               let positionB = Math.floor(Math.random()*deck.length)
-               let mid = deck[positionA]
-                       
-               deck[positionA] = deck[positionB]
-               deck[positionB] = mid
-           }
-           return deck
-       }
+        for (let i = 0; i<deck.length; i++) {
+            switch(deck[i].Value) {
+                    case "2":
+                    case "7":
+                    case "8":
+                    case "10":
+                        deck[i].Magical = true
+                        break;
+                }
+        }
 
+        deck.push({Value: "Joker", Suit: "red", Magical: true, x: 0, y: 0})
+        deck.push({Value: "Joker", Suit: "black", Magical: true, x: 0, y: 0})
+                
+        for (let i = 0; i<1000; i++) {
+            let positionA = Math.floor(Math.random()*deck.length)
+            let positionB = Math.floor(Math.random()*deck.length)
+            let mid = deck[positionA]
+                    
+            deck[positionA] = deck[positionB]
+            deck[positionB] = mid
+        }
+        return deck
+    }
        function deal(deck) {
            while (downcard1.length<3) {
                downcard1.push(deck.pop())
