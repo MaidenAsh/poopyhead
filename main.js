@@ -127,5 +127,4 @@
                 let x = i*interval + initial
                 ctx.drawImage(document.getElementById(blueBack), x, 0, 80, 120)
             } 
-
         }          
