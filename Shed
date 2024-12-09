@@ -119,7 +119,7 @@
         function gameLoop() {
             draw(deck);
             renderCards(deck);
-        }           
+        }               
 
         function createDeck() {
             let deck = []
@@ -263,13 +263,13 @@
                     for (let i = 0; i<upcard1.length; i++) {
                         if (event.offsetX > upcard1[i].x1 && event.offsetX < upcard1[i].x2
                             && event.offsetY > upcard1[i].y1 && event.offsetY < upcard1[i].y2) {
-                                if (upcard1[i].Selected == false && 
+                                if (upcard1[i].Selected == false &&     
                                 upcard1.filter((card) => card.Selected == true).length == 0) {
-                                    upcard1[i].Selected == true
+                                    upcard1[i].Selected = true
                                     selected.push(upcard1[i])
                                 } else if (upcard1[i].Selected == true) {
                                     selected = selected.filter((card) => card != upcard1[i])
-                                    upcard1[i].Selected == false
+                                    upcard1[i].Selected = false
                                 }
                                     
                         } 
@@ -279,11 +279,11 @@
                             && event.offsetY > handcard1[i].y1 && event.offsetY < handcard1[i].y2) {
                                 if (handcard1[i].Selected == false && 
                                 handcard1.filter((card) => card.Selected == true).length == 0) {
-                                    handcard1[i].Selected == true
+                                    handcard1[i].Selected = true
                                     selected.push(handcard1[i])
                                 } else if (handcard1[i].Selected == true) {
                                     selected = selected.filter((card) => card != handcard1[i])
-                                    handcard1[i].Selected == false
+                                    handcard1[i].Selected = false
                                 }
                         } 
                     }     
@@ -298,17 +298,17 @@
                                     if (handcard1[i].Selected == false) {    
                                         if (selected.length>1) {
                                             if (handcard1[i].Value == selected[0].Value) {
-                                                handcard1[i].Selected == true
+                                                handcard1[i].Selected = true
                                                 selected.push(handcard1[i])
                                             }
                                         }
                                         if (selected.length == 0) {
-                                            handcard1[i].Selected == true
+                                            handcard1[i].Selected = true
                                             selected.push(handcard1[i])
                                         }
                                     } else if (handcard1[i].Selected == true) {
                                         selected = selected.filter((card) => card != handcard1[i])
-                                        handcard1[i].Selected == false
+                                        handcard1[i].Selected = false
                                     }
                             } 
                         }     
@@ -321,17 +321,17 @@
                                     if (upcard1[i].Selected == false) {    
                                         if (selected.length>1) {
                                             if (upcard1[i].Value == selected[0].Value) {
-                                                upcard1[i].Selected == true
+                                                upcard1[i].Selected = true
                                                 selected.push(upcard1[i])
                                             }
                                         }
                                         if (selected.length == 0) {
-                                            upcard1[i].Selected == true
+                                            upcard1[i].Selected = true
                                             selected.push(upcard1[i])
                                         }
                                     } else if (upcard1[i].Selected == true) {
                                         selected = selected.filter((card) => card != upcard1[i])
-                                        upcard1[i].Selected == false
+                                        upcard1[i].Selected = false
                                     }
                             } 
                         }   
@@ -348,7 +348,7 @@
                                         }
                                     } else if (downcard1[i].Selected == true) {
                                         selected = selected.filter((card) => card != downcard1[i])
-                                        downcard1[i].Selected == false
+                                        downcard1[i].Selected = false
                                     }
                             } 
                         }   
@@ -367,7 +367,7 @@
             upcard1 = upcard1.filter((card) => card.Selected == false)
             downcard1 = downcard1.filter((card) => card.Selected == false)
         }
-        
+
 
         initGame();
     </script>
