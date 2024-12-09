@@ -110,9 +110,10 @@
             gameRunning = true;
             swapping = true
             let deck = createDeck();
+            values.push("Joker")
             deal(deck);             
             draw(deck);
-            renderCards(deck);
+            renderCards(deck);                                                      
             ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
         }
 
@@ -176,7 +177,10 @@
             }
             while (handcard1.length<3) {
                 handcard1.push(deck.pop())
-            }
+            }                               
+
+            handcard1.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
+
             while (handcard2.length<3) {
                 handcard2.push(deck.pop())
             }
