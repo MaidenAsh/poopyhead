@@ -90,11 +90,6 @@
     <script>
         const canvas = document.getElementById('shedCanvas');
         const ctx = canvas.getContext('2d');
-
-        //function test() {
-           // ctx.drawImage(document.getElementById("spades2"), 200, 662, 80, 120);
-           // ctx.drawImage(document.getElementById("redBack"), 240, 510, 80, 120);  
-       // }
         
         var suits = ["spades", "diamonds", "clubs", "hearts"];
         var values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]; 
@@ -106,8 +101,8 @@
         let upcard2 = [];
         let handcard1 = [];
         let handcard2 = [];
-        let selected = [];
-        let stack = [];
+        let selected = []; 
+        let stack = []; // Stack of cards in center
 
         canvas.addEventListener("click",selectCards);
 
@@ -128,13 +123,13 @@
 
         function createDeck() {
             let deck = []
-
+            // Iterates through suits and values to create cards
             for (let i = 0; i<suits.length; i++) {
                 for (let j = 0; j<values.length; j++) {
                     deck.push({Value: values[j], Suit: suits[i], Magical: false, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
                 }
             }
-
+            // Defines magical cards
             for (let i = 0; i<deck.length; i++) {
                 switch(deck[i].Value) {
                     case "2":
@@ -145,10 +140,10 @@
                         break;
                 }
             }
-
+            // Adds jokers
             deck.push({Value: "Joker", Suit: "red", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
             deck.push({Value: "Joker", Suit: "black", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
-                    
+            // Shuffles       
             for (let i = 0; i<1000; i++) {
                 let positionA = Math.floor(Math.random()*deck.length)
                 let positionB = Math.floor(Math.random()*deck.length)
@@ -263,6 +258,7 @@
 
         function selectCards() {    
             if (gameRunning == true) {
+                // Initial swap phase
                 if (swapping == true && selected.length<2) {
                     for (let i = 0; i<upcard1.length; i++) {
                         if (event.offsetX > upcard1[i].x1 && event.offsetX < upcard1[i].x2
@@ -271,8 +267,7 @@
                                 upcard1.filter((card) => card.Selected == true).length == 0) {
                                     upcard1[i].Selected == true
                                     selected.push(upcard1[i])
-                                }
-                                if (upcard1[i].Selected == true) {
+                                } else if (upcard1[i].Selected == true) {
                                     selected = selected.filter((card) => card != upcard1[i])
                                     upcard1[i].Selected == false
                                 }
@@ -286,54 +281,74 @@
                                 handcard1.filter((card) => card.Selected == true).length == 0) {
                                     handcard1[i].Selected == true
                                     selected.push(handcard1[i])
-                                }
-                                if (handcard1[i].Selected == true) {
+                                } else if (handcard1[i].Selected == true) {
                                     selected = selected.filter((card) => card != handcard1[i])
                                     handcard1[i].Selected == false
                                 }
                         } 
                     }     
                 }
-                
+                // Main game phase
                 if (swapping == false) {
+                    // When handcards are present
                     if (handcard1.length>0) {
                         for (let i = 0; i<handcard1.length; i++) {
                             if (event.offsetX > handcard1[i].x1 && event.offsetX < handcard1[i].x2
                                 && event.offsetY > handcard1[i].y1 && event.offsetY < handcard1[i].y2) {
-                                    if (selected.length>1) {
-                                        if (handcard1[i].Value == selected[0].Value) {
+                                    if (handcard1[i].Selected == false) {    
+                                        if (selected.length>1) {
+                                            if (handcard1[i].Value == selected[0].Value) {
+                                                handcard1[i].Selected == true
+                                                selected.push(handcard1[i])
+                                            }
+                                        }
+                                        if (selected.length == 0) {
+                                            handcard1[i].Selected == true
                                             selected.push(handcard1[i])
                                         }
-                                    }
-                                    if (selected.length == 0) {
-                                        selected.push(handcard1[i])
+                                    } else if (handcard1[i].Selected == true) {
+                                        selected = selected.filter((card) => card != handcard1[i])
+                                        handcard1[i].Selected == false
                                     }
                             } 
                         }     
                     }
-
+                    // When the player is playing from upcards
                     if (handcard1.length == 0 && upcard1.length>0) {
                         for (let i = 0; i<upcard1.length; i++) {
                             if (event.offsetX > upcard1[i].x1 && event.offsetX < upcard1[i].x2
                                 && event.offsetY > upcard1[i].y1 && event.offsetY < upcard1[i].y2) {
-                                    if (selected.length>1) {
-                                        if (upcard1[i].Value == selected[0].Value) {
+                                    if (upcard1[i].Selected == false) {    
+                                        if (selected.length>1) {
+                                            if (upcard1[i].Value == selected[0].Value) {
+                                                upcard1[i].Selected == true
+                                                selected.push(upcard1[i])
+                                            }
+                                        }
+                                        if (selected.length == 0) {
+                                            upcard1[i].Selected == true
                                             selected.push(upcard1[i])
                                         }
-                                    }
-                                    if (selected.length == 0) {
-                                        selected.push(upcard1[i])
+                                    } else if (upcard1[i].Selected == true) {
+                                        selected = selected.filter((card) => card != upcard1[i])
+                                        upcard1[i].Selected == false
                                     }
                             } 
                         }   
                     }
-
+                    // When the player is using downcards
                     if (handcard1.length == 0 && upcard1.length == 0 && downcard1.length>0) {
                         for (let i = 0; i<downcard1.length; i++) {
                             if (event.offsetX > downcard1[i].x1 && event.offsetX < downcard1[i].x2
                                 && event.offsetY > downcard1[i].y1 && event.offsetY < downcard1[i].y2) {
-                                    if (selected.length == 0) {
-                                        selected.push(downcard1[i])
+                                    if (downcard1[i].Selected == false) {
+                                        if (selected.length == 0) {
+                                            downcard1[i].Selected = true
+                                            selected.push(downcard1[i])
+                                        }
+                                    } else if (downcard1[i].Selected == true) {
+                                        selected = selected.filter((card) => card != downcard1[i])
+                                        downcard1[i].Selected == false
                                     }
                             } 
                         }   
