@@ -358,12 +358,16 @@
         }    
         
         function playCards(selected) {
-            if (selected.length>0) {
-                for (let i = 0; i<selected.length;i++) {
-                    stack.push(selected.pop())
-                }
+            // Transfers selected cards to the stack
+            for (let i = 0; i<selected.length;i++) {
+                stack.push(selected.pop())
             }
+            // Removes selected cards from player's cards
+            handcard1 = handcard1.filter((card) => card.Selected == false)
+            upcard1 = upcard1.filter((card) => card.Selected == false)
+            downcard1 = downcard1.filter((card) => card.Selected == false)
         }
+        
 
         initGame();
     </script>
