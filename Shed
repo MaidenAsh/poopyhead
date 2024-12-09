@@ -110,8 +110,9 @@
             gameRunning = true;
             swapping = true
             let deck = createDeck();
-            deal(deck);
+            deal(deck);             
             draw(deck);
+            handcard1[6].Selected = true
             renderCards(deck);
             ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
         }
@@ -174,7 +175,7 @@
             if (deck.length == 0) {
                 return
             }
-            while (handcard1.length<3) {
+            while (handcard1.length<7) {
                 handcard1.push(deck.pop())
             }
             while (handcard2.length<3) {
@@ -195,6 +196,12 @@
                 downcard1[i].y1 = 510
                 downcard1[i].y2 = 630
                 ctx.drawImage(document.getElementById("redBack"), x, 510, 80, 120)
+                if (downcard1[i].Selected == true) {
+                    ctx.lineWidth = "5"
+                    ctx.lineJoin = "round"
+                    ctx.strokeStyle = "gold"
+                    ctx.strokeRect(downcard1[i].x1+2, downcard1[i].y1+2, 76, 115)
+                }
             }     
                 
             for (let i = 0; i<downcard2.length; i++) {
@@ -210,6 +217,12 @@
                 upcard1[i].y1 = 505
                 upcard1[i].y2 = 625
                 ctx.drawImage(document.getElementById(s), x, 505, 80, 120)
+                if (upcard1[i].Selected == true) {
+                    ctx.lineWidth = "5"
+                    ctx.lineJoin = "round"
+                    ctx.strokeStyle = "gold"
+                    ctx.strokeRect(upcard1[i].x1+2, upcard1[i].y1+2, 76, 115)
+                }
             }    
 
             for (let i = 0; i<upcard2.length; i++) {
@@ -234,7 +247,13 @@
                 handcard1[i].y1 = 680
                 handcard1[i].y2 = 800
                 ctx.drawImage(document.getElementById(s), x, 680, 80, 120)
-            } 
+                if (handcard1[i].Selected == true) {
+                    ctx.lineWidth = "5"
+                    ctx.lineJoin = "round"
+                    ctx.strokeStyle = "gold"
+                    ctx.strokeRect(handcard1[i].x1+2, handcard1[i].y1+2, 76, 115)
+                }
+            }       
 
             for (let i = 0; i<handcard2.length; i++) { 
                 let gap = ((400-(80*handcard2.length))/(handcard2.length + 1))
