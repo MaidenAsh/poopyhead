@@ -99,6 +99,7 @@
         var suits = ["spades", "diamonds", "clubs", "hearts"];
         var values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]; 
         let gameRunning;
+        let swapping;
         let downcard1 = [];
         let downcard2 = []; 
         let upcard1 = [];
@@ -108,8 +109,11 @@
         let selected = [];
         let stack = [];
 
+        canvas.addEventListener("click",selectCards);
+
         function initGame() {
             gameRunning = true;
+            swapping = true
             let deck = createDeck();
             deal(deck);
             draw(deck);
@@ -120,7 +124,7 @@
         function gameLoop() {
             draw(deck);
             renderCards(deck);
-        }
+        }           
 
         function createDeck() {
             let deck = []
@@ -257,10 +261,53 @@
             }
         }          
 
-        function selectCards() {
+        function selectCards() {    
+            if (gameRunning == true) {
+                if (swapping == true && selected.length<2) {
+                    for (let i = 0; i<upcard1.length; i++) {
+                        if (event.offsetX > upcard1[i].x1 && event.offsetX < upcard1[i].x2
+                            && event.offsetY > upcard1[i].y1 && event.offsetY < upcard1[i].y2) {
+                                selected.push(upcard1[i])
+                        } 
+                    }   
+                    for (let i = 0; i<handcard1.length; i++) {
+                        if (event.offsetX > handcard1[i].x1 && event.offsetX < handcard1[i].x2
+                            && event.offsetY > handcard1[i].y1 && event.offsetY < handcard1[i].y2) {
+                                selected.push(handcard1[i])
+                        } 
+                    }     
+                }
+                
+                if (swapping == false) {
+                    if (handcard1.length>0) {
+                        for (let i = 0; i<handcard1.length; i++) {
+                            if (event.offsetX > handcard1[i].x1 && event.offsetX < handcard1[i].x2
+                                && event.offsetY > handcard1[i].y1 && event.offsetY < handcard1[i].y2) {
+                                    selected.push(handcard1[i])
+                            } 
+                        }     
+                    }
 
-        }
+                    if (handcard1.length == 0 && upcard1.length>0) {
+                        for (let i = 0; i<upcard1.length; i++) {
+                            if (event.offsetX > upcard1[i].x1 && event.offsetX < upcard1[i].x2
+                                && event.offsetY > upcard1[i].y1 && event.offsetY < upcard1[i].y2) {
+                                    selected.push(upcard1[i])
+                            } 
+                        }   
+                    }
 
+                    if (handcard1.length == 0 && upcard1.length == 0 && downcard1.length>0) {
+                        for (let i = 0; i<downcard1.length; i++) {
+                            if (event.offsetX > downcard1[i].x1 && event.offsetX < downcard1[i].x2
+                                && event.offsetY > downcard1[i].y1 && event.offsetY < downcard1[i].y2) {
+                                    selected.push(downcard1[i])
+                            } 
+                        }   
+                    }
+                }
+            }   
+        }    
         initGame();
     </script>
 </body>
