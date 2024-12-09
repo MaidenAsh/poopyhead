@@ -211,6 +211,7 @@
         }
                 
         function renderCards(deck) {
+
             for (let i = 0; i<downcard1.length; i++) {
                 let x = i*120 + 240
                 downcard1[i].x1 = x
@@ -300,7 +301,7 @@
         function selectCards() {    
             if (gameRunning == true) {
                 // Initial swap phase
-                if (swapping == true && selected.length<2) {
+                if (swapping == true && selected.length<=2) {
                     for (let i = 0; i<upcard1.length; i++) {
                         if (event.offsetX > upcard1[i].x1 && event.offsetX < upcard1[i].x2
                             && event.offsetY > upcard1[i].y1 && event.offsetY < upcard1[i].y2) {
@@ -403,10 +404,6 @@
             for (let i = 0; i<selected.length;i++) {
                 stack.push(selected.pop())
             }
-            // Removes selected cards from player's cards
-            handcard1 = handcard1.filter((card) => card.Selected == false)
-            upcard1 = upcard1.filter((card) => card.Selected == false)
-            downcard1 = downcard1.filter((card) => card.Selected == false)
         }
 
         function sortHand() {
@@ -417,8 +414,25 @@
             ctx.clearRect(0,0,800,800)
         }
 
-        
+        function swapCards(selected) {
+            if(selected.length == 2) {
+                let hand = selected.filter((x) => handcard1.includes(x)).at(0)
+                let up = selected.filter((x) => upcard1.includes(x)).at(0)
+                hand.Selected = false
+                up.Selected = false
+                handcard1.push(up)
+                sortHand()
+                upcard1.push(hand)
+            }
+        }
 
+        function cleanse() {
+            // Removes selected cards from player's cards
+            handcard1 = handcard1.filter((card) => card.Selected == false)
+            upcard1 = upcard1.filter((card) => card.Selected == false)
+            downcard1 = downcard1.filter((card) => card.Selected == false)
+        }
+        
         initGame();
     </script>
 </body>
