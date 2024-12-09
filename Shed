@@ -112,7 +112,6 @@
             let deck = createDeck();
             deal(deck);             
             draw(deck);
-            handcard1[6].Selected = true
             renderCards(deck);
             ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
         }
@@ -175,7 +174,7 @@
             if (deck.length == 0) {
                 return
             }
-            while (handcard1.length<7) {
+            while (handcard1.length<3) {
                 handcard1.push(deck.pop())
             }
             while (handcard2.length<3) {
