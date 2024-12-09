@@ -113,7 +113,9 @@
             values.push("Joker")
             deal(deck);             
             draw(deck);
-            renderCards(deck);                                                      
+            sortHand()
+            renderCards(deck);
+            renderButtons()                                                                                        
             ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
         }
 
@@ -178,8 +180,6 @@
             while (handcard1.length<3) {
                 handcard1.push(deck.pop())
             }                               
-
-            handcard1.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
 
             while (handcard2.length<3) {
                 handcard2.push(deck.pop())
@@ -390,6 +390,18 @@
             downcard1 = downcard1.filter((card) => card.Selected == false)
         }
 
+        function sortHand() {
+            handcard1.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
+        }
+
+        function renderButtons() {
+            while (gameRunning == true) {
+                while (swapping == true) {
+                    ctx.fillStyle = "red"
+                    ctx.fillRect(100,530,80,120)        
+                }
+            }
+        }
 
         initGame();
     </script>
