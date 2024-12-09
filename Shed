@@ -131,7 +131,7 @@
 
             for (let i = 0; i<suits.length; i++) {
                 for (let j = 0; j<values.length; j++) {
-                    deck.push({Value: values[j], Suit: suits[i], Magical: false, x1: 0, x2: 0, y1: 0, y2: 0})
+                    deck.push({Value: values[j], Suit: suits[i], Magical: false, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
                 }
             }
 
@@ -146,8 +146,8 @@
                 }
             }
 
-            deck.push({Value: "Joker", Suit: "red", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0})
-            deck.push({Value: "Joker", Suit: "black", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0})
+            deck.push({Value: "Joker", Suit: "red", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
+            deck.push({Value: "Joker", Suit: "black", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
                     
             for (let i = 0; i<1000; i++) {
                 let positionA = Math.floor(Math.random()*deck.length)
@@ -267,13 +267,30 @@
                     for (let i = 0; i<upcard1.length; i++) {
                         if (event.offsetX > upcard1[i].x1 && event.offsetX < upcard1[i].x2
                             && event.offsetY > upcard1[i].y1 && event.offsetY < upcard1[i].y2) {
-                                selected.push(upcard1[i])
+                                if (upcard1[i].Selected == false && 
+                                upcard1.filter((card) => card.Selected == true).length == 0) {
+                                    upcard1[i].Selected == true
+                                    selected.push(upcard1[i])
+                                }
+                                if (upcard1[i].Selected == true) {
+                                    selected = selected.filter((card) => card != upcard1[i])
+                                    upcard1[i].Selected == false
+                                }
+                                    
                         } 
                     }   
                     for (let i = 0; i<handcard1.length; i++) {
                         if (event.offsetX > handcard1[i].x1 && event.offsetX < handcard1[i].x2
                             && event.offsetY > handcard1[i].y1 && event.offsetY < handcard1[i].y2) {
-                                selected.push(handcard1[i])
+                                if (handcard1[i].Selected == false && 
+                                handcard1.filter((card) => card.Selected == true).length == 0) {
+                                    handcard1[i].Selected == true
+                                    selected.push(handcard1[i])
+                                }
+                                if (handcard1[i].Selected == true) {
+                                    selected = selected.filter((card) => card != handcard1[i])
+                                    handcard1[i].Selected == false
+                                }
                         } 
                     }     
                 }
@@ -283,7 +300,14 @@
                         for (let i = 0; i<handcard1.length; i++) {
                             if (event.offsetX > handcard1[i].x1 && event.offsetX < handcard1[i].x2
                                 && event.offsetY > handcard1[i].y1 && event.offsetY < handcard1[i].y2) {
-                                    selected.push(handcard1[i])
+                                    if (selected.length>1) {
+                                        if (handcard1[i].Value == selected[0].Value) {
+                                            selected.push(handcard1[i])
+                                        }
+                                    }
+                                    if (selected.length == 0) {
+                                        selected.push(handcard1[i])
+                                    }
                             } 
                         }     
                     }
@@ -292,7 +316,14 @@
                         for (let i = 0; i<upcard1.length; i++) {
                             if (event.offsetX > upcard1[i].x1 && event.offsetX < upcard1[i].x2
                                 && event.offsetY > upcard1[i].y1 && event.offsetY < upcard1[i].y2) {
-                                    selected.push(upcard1[i])
+                                    if (selected.length>1) {
+                                        if (upcard1[i].Value == selected[0].Value) {
+                                            selected.push(upcard1[i])
+                                        }
+                                    }
+                                    if (selected.length == 0) {
+                                        selected.push(upcard1[i])
+                                    }
                             } 
                         }   
                     }
@@ -301,13 +332,24 @@
                         for (let i = 0; i<downcard1.length; i++) {
                             if (event.offsetX > downcard1[i].x1 && event.offsetX < downcard1[i].x2
                                 && event.offsetY > downcard1[i].y1 && event.offsetY < downcard1[i].y2) {
-                                    selected.push(downcard1[i])
+                                    if (selected.length == 0) {
+                                        selected.push(downcard1[i])
+                                    }
                             } 
                         }   
                     }
                 }
             }   
         }    
+        
+        function playCards(selected) {
+            if (selected.length>0) {
+                for (let i = 0; i<selected.length;i++) {
+                    stack.push(selected.pop())
+                }
+            }
+        }
+
         initGame();
     </script>
 </body>
