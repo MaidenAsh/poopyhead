@@ -115,9 +115,28 @@
             draw(deck);
             sortHand()
             renderCards(deck);
-            renderButtons()                                                                                        
+            ctx.fillStyle = "#970101"
+            ctx.roundRect(60, 530, 120, 80, 5)                                               
+            ctx.fill()
+            ctx.strokeStyle = "black"
+            ctx.lineWidth = 5
+            ctx.lineJoin = "round"
+            ctx.strokeRect(60, 530, 120, 80)
+            ctx.beginPath();
+            ctx.moveTo(60,570);
+            ctx.lineTo(180,570);
+            ctx.closePath();
+            ctx.textBaseline = "middle"
+            ctx.beginPath();
+            ctx.moveTo(120,530);
+            ctx.lineTo(120,610);
+            ctx.closePath();
+            ctx.textAlign = "center"
+            ctx.fillStyle ="black"
+            ctx.font = "bold 30px Times New Roman"
+            ctx.fillText("Swap", 120, 570)        
             ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
-        }
+        }   
 
         function gameLoop() {
             draw(deck);
@@ -393,15 +412,12 @@
         function sortHand() {
             handcard1.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
         }
-
-        function renderButtons() {
-            while (gameRunning == true) {
-                while (swapping == true) {
-                    ctx.fillStyle = "red"
-                    ctx.fillRect(100,530,80,120)        
-                }
-            }
+        
+        function clear() {
+            ctx.clearRect(0,0,800,800)
         }
+
+        
 
         initGame();
     </script>
