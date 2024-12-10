@@ -119,7 +119,7 @@
             draw();        
             sortHand();              
             renderCards();
-            ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
+            //ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
         }           
 
         function createDeck(deck) {
@@ -189,10 +189,10 @@
         }
                 
         function renderCards() {
-            ctx.fillText(handcard1[0].Selected,500,400)
-            ctx.fillText(handcard1.length,600,400)
-            ctx.fillText(upcard1.length,600,500)
-            ctx.fillText(selected.length,400,400)
+            //ctx.fillText(handcard1[0].Selected,500,400)
+            //ctx.fillText(handcard1.length,600,400)
+            //ctx.fillText(upcard1.length,600,500)
+            //ctx.fillText(selected.length,400,400)
             for (let i = 0; i<downcard1.length; i++) {
                 let x = i*120 + 240
                 downcard1[i].x1 = x
@@ -283,8 +283,12 @@
             }
 
             if (gameRunning == true && swapping == true) {
+                readyable = true
                 drawReadyButton()
+            } else {
+                readyable = false
             }
+
 
             if (gameRunning == true && swapping == true && selected.length == 2) {
                 swappable = true
@@ -294,7 +298,10 @@
             }
 
             if (gameRunning == true && swapping == false && selected.length>0) {
+                playable = true
                 drawPlayButton()
+            }   else {
+                playable = false
             }
 
         }          
@@ -407,19 +414,13 @@
             clear();   
             renderCards();
         }    
-        
-        function playCards(selected) {
-            // Transfers selected cards to the stack
-            for (let i = 0; i<selected.length;i++) {
-                stack.push(selected.pop())
-            }
-        }
 
         function sortHand() {
             handcard1.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
         }
         
         function clear() {
+            // Clears canvas before rendering
             ctx.clearRect(0,0,800,800)
         }
 
@@ -427,12 +428,13 @@
             if(selected.length == 2) {
                 let hand = selected.filter((x) => handcard1.includes(x)).pop()
                 let up = selected.filter((x) => upcard1.includes(x)).pop()
+                cleanse()
                 hand.Selected = false   
                 up.Selected = false
                 handcard1.push(up)
                 sortHand()
                 upcard1.push(hand)
-                cleanse()
+                
             }       
         }
 
@@ -513,6 +515,16 @@
             ctx.fillText("Play", 680, 570)
         }
 
+        function ready() {
+            
+        }
+        
+        function playCards() {
+            // Transfers selected cards to the stack
+            for (let i = 0; i<selected.length;i++) {
+                stack.push(selected.pop())
+            }
+        }
     </script>
 </body>
 </html>
