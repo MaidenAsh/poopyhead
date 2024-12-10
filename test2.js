@@ -18,16 +18,16 @@
        let stack = []; 
        let cw = 80;
        let ch = 120;
+       let test1 = [1,2,3,4,5]
+       console.log(test1.at(-1))
+    
 
        function initGame() {
            gameRunning = true;
            let deck = createDeck();
-           console.log(deck.length)
            values.push("Joker")
            deal(deck);
-           console.log(deck.length)
            draw(deck);
-           console.log(deck.length)
            renderCards();
            
        }

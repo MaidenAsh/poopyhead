@@ -579,11 +579,18 @@
 
         function playCards() {
             // Transfers selected cards to the stack
-            for (let i = 0; i<selected.length;i++) {
-                let mid = selected[i]
-                stack.push(mid)
-            }
-            cleanse()
+            if (stack.length == 0 || selected[0].Magical == true ||
+            values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
+                for (let i = 0; i<selected.length;i++) {
+                    let mid = selected[i]
+                    stack.push(mid)
+                    cleanse()
+                }
+                if (stack.at(-1).Value == 10) {
+                    burn()
+                }
+              
+            } else {forfeit()}
         }
     
         function forfeit() {
@@ -593,6 +600,10 @@
                 let mid = stack[i]
                 handcard1.push(mid)
             }
+            stack = []
+        }
+
+        function burn() {
             stack = []
         }
 
