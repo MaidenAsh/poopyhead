@@ -343,6 +343,12 @@
                             swapCards()
                         }
                     }
+                    if (readyable == true) {
+                        if (event.offsetX > 620 && event.offsetX < 740
+                        && event.offsetY > 530 && event.offsetY < 610) {
+                            swapping = false
+                        }   
+                    }
                 }   
                 // Main game phase
                 if (swapping == false) {
@@ -409,10 +415,18 @@
                             } 
                         }   
                     }
+                    // Play button
+                    if (playable == true) {
+                        if (event.offsetX > 620 && event.offsetX < 740
+                        && event.offsetY > 530 && event.offsetY < 610) {
+                            playCards()
+                        }   
+                    }
                 }
-            }       
+            }                   
             clear();   
             renderCards();
+            checkVictory();
         }    
 
         function sortHand() {
@@ -515,16 +529,22 @@
             ctx.fillText("Play", 680, 570)
         }
 
-        function ready() {
-            
-        }
-        
         function playCards() {
             // Transfers selected cards to the stack
             for (let i = 0; i<selected.length;i++) {
                 stack.push(selected.pop())
             }
+            cleanse()
         }
+    
+        function checkVictory() {
+            if (downcard1.length == 0) {
+                clear()
+                ctx.font = "bold italics 100px Times New Roman"
+                ctx.fillText("Player 1 Wins!", 400, 400)
+            }
+        }   
+    
     </script>
 </body>
 </html>
