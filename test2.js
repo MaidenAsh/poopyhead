@@ -22,10 +22,14 @@
        function initGame() {
            gameRunning = true;
            let deck = createDeck();
+           console.log(deck.length)
+           values.push("Joker")
            deal(deck);
+           console.log(deck.length)
            draw(deck);
+           console.log(deck.length)
            renderCards();
-           console.log(deck)
+           
        }
 
        function gameLoop() {
@@ -35,27 +39,27 @@
 
        function createDeck() {
         let deck = []
-
+        // Iterates through suits and values to create cards
         for (let i = 0; i<suits.length; i++) {
             for (let j = 0; j<values.length; j++) {
-                deck.push({Value: values[j], Suit: suits[i], Magical: false, x: 0, y: 0})
+                deck.push({Value: values[j], Suit: suits[i], Magical: false, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
             }
         }
-
+        // Defines magical cards
         for (let i = 0; i<deck.length; i++) {
             switch(deck[i].Value) {
-                    case "2":
-                    case "7":
-                    case "8":
-                    case "10":
-                        deck[i].Magical = true
-                        break;
-                }
+                case "2":
+                case "7":
+                case "8":
+                case "10":
+                    deck[i].Magical = true
+                    break;
+            }
         }
-
-        deck.push({Value: "Joker", Suit: "red", Magical: true, x: 0, y: 0})
-        deck.push({Value: "Joker", Suit: "black", Magical: true, x: 0, y: 0})
-                
+        // Adds jokers
+        deck.push({Value: "Joker", Suit: "red", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
+        deck.push({Value: "Joker", Suit: "black", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
+        // Shuffles       
         for (let i = 0; i<1000; i++) {
             let positionA = Math.floor(Math.random()*deck.length)
             let positionB = Math.floor(Math.random()*deck.length)

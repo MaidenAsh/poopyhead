@@ -95,6 +95,10 @@
         var values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]; 
         let gameRunning;
         let swapping;
+        let swappable = false;
+        let readyable = true;
+        let playable = false;
+        let deck = [];
         let downcard1 = [];
         let downcard2 = []; 
         let upcard1 = [];
@@ -107,50 +111,24 @@
         canvas.addEventListener("click",selectCards);
 
         function initGame() {
-            gameRunning = true;
-            swapping = true
-            let deck = createDeck();
-            values.push("Joker")
-            deal(deck);             
-            draw(deck);
-            sortHand()
-            renderCards(deck);
-            ctx.fillStyle = "#970101"
-            ctx.roundRect(60, 530, 120, 80, 5)                                               
-            ctx.fill()
-            ctx.strokeStyle = "black"
-            ctx.lineWidth = 5
-            ctx.lineJoin = "round"
-            ctx.strokeRect(60, 530, 120, 80)
-            ctx.beginPath();
-            ctx.moveTo(60,570);
-            ctx.lineTo(180,570);
-            ctx.closePath();
-            ctx.textBaseline = "middle"
-            ctx.beginPath();
-            ctx.moveTo(120,530);
-            ctx.lineTo(120,610);
-            ctx.closePath();
-            ctx.textAlign = "center"
-            ctx.fillStyle ="black"
-            ctx.font = "bold 30px Times New Roman"
-            ctx.fillText("Swap", 120, 570)        
+            gameRunning = true;     
+            swapping = true 
+            createDeck(deck);
+            values.push("Joker") // Facilitates sorting cards in hand
+            deal();                   
+            draw();        
+            sortHand();              
+            renderCards();
             ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
-        }   
+        }           
 
-        function gameLoop() {
-            draw(deck);
-            renderCards(deck);
-        }               
-
-        function createDeck() {
-            let deck = []
+        function createDeck(deck) {
             // Iterates through suits and values to create cards
             for (let i = 0; i<suits.length; i++) {
                 for (let j = 0; j<values.length; j++) {
                     deck.push({Value: values[j], Suit: suits[i], Magical: false, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
                 }
-            }
+            }           
             // Defines magical cards
             for (let i = 0; i<deck.length; i++) {
                 switch(deck[i].Value) {
@@ -162,7 +140,7 @@
                         break;
                 }
             }
-            // Adds jokers
+            // Adds Jokers
             deck.push({Value: "Joker", Suit: "red", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
             deck.push({Value: "Joker", Suit: "black", Magical: true, x1: 0, x2: 0, y1: 0, y2: 0, Selected: false})
             // Shuffles       
@@ -174,10 +152,10 @@
                 deck[positionA] = deck[positionB]
                 deck[positionB] = mid
             }
-            return deck
+            //return deck
         }
 
-        function deal(deck) {
+        function deal() {
             while (downcard1.length<3) {
                 downcard1.push(deck.pop())
             }
@@ -192,7 +170,7 @@
             }
         }
 
-        function draw(deck) {
+        function draw() {
             if (deck.length == 0) {
                 return
             }
@@ -210,8 +188,11 @@
             return string += card.Suit + card.Value
         }
                 
-        function renderCards(deck) {
-
+        function renderCards() {
+            ctx.fillText(handcard1[0].Selected,500,400)
+            ctx.fillText(handcard1.length,600,400)
+            ctx.fillText(upcard1.length,600,500)
+            ctx.fillText(selected.length,400,400)
             for (let i = 0; i<downcard1.length; i++) {
                 let x = i*120 + 240
                 downcard1[i].x1 = x
@@ -252,7 +233,7 @@
                 let s = formString(upcard2[i])
                 let x = i*120 + 240
                 ctx.drawImage(document.getElementById(s), x, 165, 80, 120)
-            } 
+            }           
 
             for (let i = 0; i<handcard1.length; i++) {
                 let s = formString(handcard1[i])
@@ -276,7 +257,7 @@
                     ctx.strokeStyle = "gold"
                     ctx.strokeRect(handcard1[i].x1+2, handcard1[i].y1+2, 76, 115)
                 }
-            }       
+            }           
 
             for (let i = 0; i<handcard2.length; i++) { 
                 let gap = ((400-(80*handcard2.length))/(handcard2.length + 1))
@@ -285,10 +266,14 @@
                 let x = i*interval + initial
                 ctx.drawImage(document.getElementById("blueBack"), x, 0, 80, 120)
             }
-            
-            for (let i = 0; i<deck.length; i++) { 
-                let y = 340 - i/4;
+
+            for (let i = 0; i<deck.length; i++) {
+                let y = 340 - i/2;                                                            
                 ctx.drawImage(document.getElementById("redBack"), 300, y, 80, 120);
+                //Draws cards in deck side by side for testing purposes
+                //let y = i%6 * 120
+                //let x = Math.floor(i/6) * 20
+                //ctx.drawImage(document.getElementById("redBack"), x, y, 80, 120);
             }
                         
             for (let i = 0; i<stack.length; i++) { 
@@ -296,6 +281,22 @@
                 let y = 340 - i/4;
                 ctx.drawImage(document.getElementById(s), 420, y, 80, 120);
             }
+
+            if (gameRunning == true && swapping == true) {
+                drawReadyButton()
+            }
+
+            if (gameRunning == true && swapping == true && selected.length == 2) {
+                swappable = true
+                drawSwapButton()
+            } else {
+                swappable = false
+            }
+
+            if (gameRunning == true && swapping == false && selected.length>0) {
+                drawPlayButton()
+            }
+
         }          
 
         function selectCards() {    
@@ -312,7 +313,7 @@
                                 } else if (upcard1[i].Selected == true) {
                                     selected = selected.filter((card) => card != upcard1[i])
                                     upcard1[i].Selected = false
-                                }
+                                }   
                                     
                         } 
                     }   
@@ -322,14 +323,20 @@
                                 if (handcard1[i].Selected == false && 
                                 handcard1.filter((card) => card.Selected == true).length == 0) {
                                     handcard1[i].Selected = true
-                                    selected.push(handcard1[i])
+                                    selected.push(handcard1[i]) 
                                 } else if (handcard1[i].Selected == true) {
                                     selected = selected.filter((card) => card != handcard1[i])
                                     handcard1[i].Selected = false
                                 }
                         } 
-                    }     
-                }
+                    }
+                    if (swappable == true) {
+                        if (event.offsetX > 60 && event.offsetX < 180
+                        && event.offsetY > 530 && event.offsetY < 610) {
+                            swapCards()
+                        }
+                    }
+                }   
                 // Main game phase
                 if (swapping == false) {
                     // When handcards are present
@@ -338,7 +345,7 @@
                             if (event.offsetX > handcard1[i].x1 && event.offsetX < handcard1[i].x2
                                 && event.offsetY > handcard1[i].y1 && event.offsetY < handcard1[i].y2) {
                                     if (handcard1[i].Selected == false) {    
-                                        if (selected.length>1) {
+                                        if (selected.length>0) {
                                             if (handcard1[i].Value == selected[0].Value) {
                                                 handcard1[i].Selected = true
                                                 selected.push(handcard1[i])
@@ -361,7 +368,7 @@
                             if (event.offsetX > upcard1[i].x1 && event.offsetX < upcard1[i].x2
                                 && event.offsetY > upcard1[i].y1 && event.offsetY < upcard1[i].y2) {
                                     if (upcard1[i].Selected == false) {    
-                                        if (selected.length>1) {
+                                        if (selected.length>0) {
                                             if (upcard1[i].Value == selected[0].Value) {
                                                 upcard1[i].Selected = true
                                                 selected.push(upcard1[i])
@@ -396,7 +403,9 @@
                         }   
                     }
                 }
-            }   
+            }       
+            clear();   
+            renderCards();
         }    
         
         function playCards(selected) {
@@ -414,26 +423,96 @@
             ctx.clearRect(0,0,800,800)
         }
 
-        function swapCards(selected) {
+        function swapCards() {
             if(selected.length == 2) {
-                let hand = selected.filter((x) => handcard1.includes(x)).at(0)
-                let up = selected.filter((x) => upcard1.includes(x)).at(0)
-                hand.Selected = false
+                let hand = selected.filter((x) => handcard1.includes(x)).pop()
+                let up = selected.filter((x) => upcard1.includes(x)).pop()
+                hand.Selected = false   
                 up.Selected = false
                 handcard1.push(up)
                 sortHand()
                 upcard1.push(hand)
-            }
+                cleanse()
+            }       
         }
 
         function cleanse() {
             // Removes selected cards from player's cards
-            handcard1 = handcard1.filter((card) => card.Selected == false)
-            upcard1 = upcard1.filter((card) => card.Selected == false)
-            downcard1 = downcard1.filter((card) => card.Selected == false)
+            handcard1 = handcard1.filter((card) => card.Selected != true)
+            upcard1 = upcard1.filter((card) => card.Selected != true)
+            downcard1 = downcard1.filter((card) => card.Selected != true)
+            selected = []
         }
-        
-        initGame();
+
+        function drawSwapButton() {
+            ctx.fillStyle = "#970101"
+            ctx.roundRect(60, 530, 120, 80, 5)                                               
+            ctx.fill()
+            ctx.strokeStyle = "black"
+            ctx.lineWidth = 5
+            ctx.lineJoin = "round"
+            ctx.strokeRect(60, 530, 120, 80)
+            ctx.beginPath();
+            ctx.moveTo(60,570);
+            ctx.lineTo(180,570);
+            ctx.closePath();
+            ctx.textBaseline = "middle"
+            ctx.beginPath();
+            ctx.moveTo(120,530);
+            ctx.lineTo(120,610);
+            ctx.closePath();
+            ctx.textAlign = "center"
+            ctx.fillStyle ="black"
+            ctx.font = "bold 30px Times New Roman"
+            ctx.fillText("Swap", 120, 570)    
+        }
+
+        function drawReadyButton() {
+            ctx.fillStyle = "#970101"
+            ctx.roundRect(620, 530, 120, 80, 5)                                               
+            ctx.fill()
+            ctx.strokeStyle = "black"
+            ctx.lineWidth = 5
+            ctx.lineJoin = "round"
+            ctx.strokeRect(620, 530, 120, 80)
+            ctx.beginPath();
+            ctx.moveTo(620,570);
+            ctx.lineTo(740,570);
+            ctx.closePath();
+            ctx.textBaseline = "middle"
+            ctx.beginPath();
+            ctx.moveTo(680,530);
+            ctx.lineTo(680,610);
+            ctx.closePath();
+            ctx.textAlign = "center"
+            ctx.fillStyle ="black"  
+            ctx.font = "bold 30px Times New Roman"
+            ctx.fillText("Ready", 680, 570)
+        }
+
+        function drawPlayButton() {
+            ctx.fillStyle = "#970101"
+            ctx.roundRect(620, 530, 120, 80, 5)                                               
+            ctx.fill()
+            ctx.strokeStyle = "black"
+            ctx.lineWidth = 5
+            ctx.lineJoin = "round"
+            ctx.strokeRect(620, 530, 120, 80)
+            ctx.beginPath();
+            ctx.moveTo(620,570);
+            ctx.lineTo(740,570);
+            ctx.closePath();
+            ctx.textBaseline = "middle"
+            ctx.beginPath();
+            ctx.moveTo(680,530);
+            ctx.lineTo(680,610);
+            ctx.closePath();
+            ctx.textAlign = "center"
+            ctx.fillStyle ="black"  
+            ctx.font = "bold 30px Times New Roman"
+            ctx.fillText("Play", 680, 570)
+        }
+
     </script>
 </body>
 </html>
