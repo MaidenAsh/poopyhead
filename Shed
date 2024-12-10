@@ -572,7 +572,8 @@
         function playCards() {
             // Transfers selected cards to the stack
             for (let i = 0; i<selected.length;i++) {
-                stack.push(selected.pop())
+                let mid = selected[i]
+                stack.push(mid)
             }
             cleanse()
         }
@@ -581,10 +582,10 @@
             // Transfers cards from stack to hand
             for (let i = 0; i<stack.length;i++) {
                 stack[i].Selected = false
+                let mid = stack[i]
+                handcard1.push(mid)
             }
-            for (let i = 0; i<stack.length;i++) {
-                handcard1.push(stack.pop())
-            }
+            stack = []
         }
 
         function checkVictory() {
