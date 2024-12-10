@@ -357,6 +357,13 @@
                     if (readyable == true) {
                         if (event.offsetX > 620 && event.offsetX < 740
                         && event.offsetY > 530 && event.offsetY < 610) {
+                            for (let i = 0; i<upcard1.length;i++) {
+                                upcard1[i].Selected = false
+                            }
+                            for (let i = 0; i<handcard1.length;i++) {
+                                handcard1[i].Selected = false
+                            }
+                            cleanse()
                             swapping = false
                         }   
                     }
@@ -373,7 +380,7 @@
                                             if (handcard1[i].Value == selected[0].Value) {
                                                 handcard1[i].Selected = true
                                                 selected.push(handcard1[i])
-                                            }
+                                            }   
                                         }
                                         if (selected.length == 0) {
                                             handcard1[i].Selected = true
@@ -443,6 +450,7 @@
                 }
             }                   
             clear();
+            draw();
             sortHand();   
             renderCards();
             checkVictory();
