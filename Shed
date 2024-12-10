@@ -98,6 +98,8 @@
         let swappable = false;
         let readyable = true;
         let playable = false;
+        let forfeitable = false;
+        let replayable = false;
         let deck = [];
         let downcard1 = [];
         let downcard2 = []; 
@@ -304,6 +306,13 @@
                 playable = false
             }
 
+            if (gameRunning == true && swapping == false && stack.length>0) {
+                forfeitable = true
+                drawForfeitButton()
+            }   else {
+                forfeitable = false
+            }
+
         }          
 
         function selectCards() {    
@@ -337,12 +346,14 @@
                                 }
                         } 
                     }
+                    // Swap button
                     if (swappable == true) {
                         if (event.offsetX > 60 && event.offsetX < 180
                         && event.offsetY > 530 && event.offsetY < 610) {
                             swapCards()
                         }
                     }
+                    // Ready button
                     if (readyable == true) {
                         if (event.offsetX > 620 && event.offsetX < 740
                         && event.offsetY > 530 && event.offsetY < 610) {
@@ -422,9 +433,17 @@
                             playCards()
                         }   
                     }
+                    // Forfeit button
+                    if (forfeitable == true) {
+                        if (event.offsetX > 60 && event.offsetX < 180
+                        && event.offsetY > 530 && event.offsetY < 610) {
+                            forfeit()
+                        }
+                    }
                 }
             }                   
-            clear();   
+            clear();
+            sortHand();   
             renderCards();
             checkVictory();
         }    
@@ -446,9 +465,7 @@
                 hand.Selected = false   
                 up.Selected = false
                 handcard1.push(up)
-                sortHand()
                 upcard1.push(hand)
-                
             }       
         }
 
@@ -529,6 +546,29 @@
             ctx.fillText("Play", 680, 570)
         }
 
+        function drawForfeitButton() {
+            ctx.fillStyle = "#970101"
+            ctx.roundRect(60, 530, 120, 80, 5)                                               
+            ctx.fill()
+            ctx.strokeStyle = "black"
+            ctx.lineWidth = 5
+            ctx.lineJoin = "round"
+            ctx.strokeRect(60, 530, 120, 80)
+            ctx.beginPath();
+            ctx.moveTo(60,570);
+            ctx.lineTo(180,570);
+            ctx.closePath();
+            ctx.textBaseline = "middle"
+            ctx.beginPath();
+            ctx.moveTo(120,530);
+            ctx.lineTo(120,610);
+            ctx.closePath();
+            ctx.textAlign = "center"
+            ctx.fillStyle ="black"
+            ctx.font = "bold 30px Times New Roman"
+            ctx.fillText("Forfeit", 120, 570)    
+        }
+
         function playCards() {
             // Transfers selected cards to the stack
             for (let i = 0; i<selected.length;i++) {
@@ -537,11 +577,27 @@
             cleanse()
         }
     
+        function forfeit() {
+            // Transfers cards from stack to hand
+            for (let i = 0; i<stack.length;i++) {
+                stack[i].Selected = false
+            }
+            for (let i = 0; i<stack.length;i++) {
+                handcard1.push(stack.pop())
+            }
+        }
+
         function checkVictory() {
             if (downcard1.length == 0) {
                 clear()
                 ctx.font = "bold italics 100px Times New Roman"
-                ctx.fillText("Player 1 Wins!", 400, 400)
+                ctx.fillText("You Win!", 400, 400)
+            }
+
+            if (downcard2.length == 0) {
+                clear()
+                ctx.font = "bold italics 100px Times New Roman"
+                ctx.fillText("You Lose!", 400, 400)
             }
         }   
     
