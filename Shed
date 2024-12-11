@@ -599,8 +599,8 @@
                 stack[i].Selected = false
                 let mid = stack[i]
                 handcard1.push(mid)
-            }
-            stack = []
+            }   
+            burn() 
         }
 
         function burn() {
@@ -608,19 +608,19 @@
         }
 
         function checkVictory() {
-            if (downcard1.length == 0) {
+            if (downcard1.length == 0 && upcard1.length == 0 && handcard1.length == 0) {
                 clear()
                 ctx.font = "bold italics 100px Times New Roman"
                 ctx.fillText("You Win!", 400, 400)
             }
 
-            if (downcard2.length == 0) {
-                clear()
+            if (downcard2.length == 0 && upcard2.length == 0 && handcard2.length == 0) {
+                clear()     
                 ctx.font = "bold italics 100px Times New Roman"
                 ctx.fillText("You Lose!", 400, 400)
             }
         }   
-    
+
     </script>
 </body>
 </html>
