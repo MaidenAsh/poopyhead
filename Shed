@@ -451,10 +451,10 @@
             }                   
             clear();
             draw();
-            sortHand();   
+            sortHand();        
             renderCards();
             checkVictory();
-        }    
+        }           
 
         function sortHand() {
             handcard1.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
@@ -589,21 +589,24 @@
                 if (stack.at(-1).Value == 10) {
                     burn()
                 }
-              
+                
             } else {forfeit()}
+            //checkFourInRow()        
         }
     
         function forfeit() {
             // Transfers cards from stack to hand
             for (let i = 0; i<stack.length;i++) {
-                stack[i].Selected = false
                 let mid = stack[i]
                 handcard1.push(mid)
             }   
-            burn() 
-        }
+            burn()
+            for (let i = 0; i<handcard1.length;i++) (
+                handcard1[i].Selected = false
+            )
+        }                   
 
-        function burn() {
+        function burn() {       
             stack = []
         }
 
@@ -620,6 +623,16 @@
                 ctx.fillText("You Lose!", 400, 400)
             }
         }   
+
+        function checkFourInRow() {
+            if (stack.length >= 4) {
+                if (stack.at(-4).Value == stack.at(-3).Value && 
+                stack.at(-3).Value == stack.at(-2).Value &&
+                stack.at(-2).Value == stack.at(-1).Value) {
+                    burn()
+                }
+            }
+        }
 
     </script>
 </body>
