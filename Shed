@@ -584,22 +584,19 @@
                 for (let i = 0; i<selected.length;i++) {
                     let mid = selected[i]
                     stack.push(mid)
-                    cleanse()
+                    //cleanse()
                 }
                 if (stack.at(-1).Value == 10) {
                     burn()
-                }
-                
+                }      
             } else {forfeit()}
             //checkFourInRow()        
+            cleanse()
         }
     
         function forfeit() {
             // Transfers cards from stack to hand
-            for (let i = 0; i<stack.length;i++) {
-                let mid = stack[i]
-                handcard1.push(mid)
-            }   
+            handcard1 = handcard1.concat(stack)
             burn()
             for (let i = 0; i<handcard1.length;i++) (
                 handcard1[i].Selected = false

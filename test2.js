@@ -18,10 +18,12 @@
        let stack = []; 
        let cw = 80;
        let ch = 120;
-       let test1 = [1,2,3]
+       let test1 = []
        let test2 = [4,5]
-       console.log(test1.push(test2))
+       test1 = test1.concat(test2)
+       test2 = []
        console.log(test1)
+       console.log(test2)
     
 
        function initGame() {
