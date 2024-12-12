@@ -450,6 +450,7 @@
                 }
             }                   
             clear();
+            checkFourInRow();
             draw();
             sortHand();        
             renderCards();
