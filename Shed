@@ -268,7 +268,8 @@
                 let interval = 80 + gap
                 let initial = 200 + gap     
                 let x = i*interval + initial    
-                ctx.drawImage(document.getElementById("blueBack"), x, 0, 80, 120)
+                let s = formString(handcard2[i])
+                ctx.drawImage(document.getElementById(s), x, 0, 80, 120)
             }
 
             for (let i = 0; i<deck.length; i++) {
