@@ -465,8 +465,9 @@
         }                   
 
         function sortHand() {
-            // Sorts hand via values array
+            // Sorts hands via values array
             handcard1.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
+            handcard2.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
         }
         
         function clear() {
@@ -654,9 +655,9 @@
             // Transfers cards from stack to hand
             handcard1 = handcard1.concat(stack)
             burn()
-            for (let i = 0; i<handcard1.length;i++) (
+            for (let i = 0; i<handcard1.length;i++) {
                 handcard1[i].Selected = false
-            )
+            }
         }                   
 
         function burn() {       
@@ -684,6 +685,18 @@
                 stack.at(-3).Value == stack.at(-2).Value &&
                 stack.at(-2).Value == stack.at(-1).Value) {
                     burn()
+                }
+            }
+        }
+
+        function botMove() {
+            if (p2 == true) {
+                if (stack.length == 0) {
+                    stack.push(handcard2.unshift())
+                }
+
+                if (handcard2.length>0 && stack.length > 0) {
+                    let chosen = handcard2.findIndex((x) => compareCards(x,stack.at(-1) == true))
                 }
             }
         }
