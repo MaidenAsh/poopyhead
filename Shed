@@ -603,112 +603,127 @@
         }
 
         function compareCards(a,b) {
-            // Compares the selected card(s), a, with the top card in the stack, b
+            // Compares the selected card(s), a, with the card in the stack, b
             if (b.Value == "Joker") {
                 if (a.Magical == true) {
-                    return false
+                    return false    
                 } else if (a.Magical == false) {
-                    if (stack.findIndex((x) => x != "Joker") != -1) {
-                        compareCards(a,stack.at(stack.findIndex((x) => x != "Joker")))
-                    } else if (stack.findIndex((x) => x != "Joker") == -1) {
+                    if (stack.findLastIndex((x) => x.Value != "Joker") != -1) {
+                        compareCards(a,stack.at(stack.findLastIndex((x) => x.Value != "Joker")))
+                    } else if (stack.findLastIndex((x) => x.Value != "Joker") == -1) {
                         return true 
                     }
-                }
-            }
-
-            if (b.Value == "8") {
-                if (stack.findIndex((x) => x != "8") != -1) {
-                    compareCards(a,stack.at(stack.findIndex((x) => x != "8")))
-                } else if (stack.findIndex((x) => x != "8") == -1) {
+                }                   
+            } else if (b.Value == "8") {
+                let index = stack.findLastIndex((x) => x.Value != "8")
+                if (index != -1) {          
+                    compareCards(a,stack.at(index))
+                } else if (index == -1) {
                     return true 
-                }
-            }
-
-            if (b.Value == "7") {
+                }           
+            } else if (b.Value == "7") {
                 if (a.Magical == true || a.Value < 7) {
+                    return true
+                } else {
+                    return false
+                }           
+            } else {
+                if (a.Magical == true ||
+                values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value) >= 0) {
                     return true
                 } else {
                     return false
                 }
             }
-        }
+        }           
 
         function playCards() {
+            if (stack.length > 0) {
+                if (compareCards(selected[0],stack.at(-1))) {
+                    transferToStack()
+                } else {
+                    forfeit()
+                }
+            } else {
+                transferToStack()
+            }
+            cleanse()   
+
             // Transfers selected cards to the stack, checks if the played cards are viable and 
             // forfeits on the player's behalf if they are not viable
-            if (stack.length == 0) {
-                transferToStack()
-                cleanse()
-                return
-            }
+        //     if (stack.length == 0) {
+        //         transferToStack()
+        //         cleanse()
+        //         return
+        //     }
 
-            if (stack.length == 1) {
-                if (stack.at(-1).Value == "Joker") {
-                    if (selected[0].Magical == false) {
-                        transferToStack()
-                    } else {forfeit()} 
-                    cleanse()
-                    return
-                } else if (stack.at(-1).Value == 8) {
-                    transferToStack()
-                    cleanse()
-                    return
-                } else if (stack.at(-1).Value == 7) {
-                    if (selected[0].Value < 7 || selected[0].Magical == true) {
-                        transferToStack()
-                        cleanse()
-                        return
-                    }
-                } else {
-                    if (selected[0].Magical == true ||
-                    values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
-                        transferToStack()            
-                    } else {forfeit()} 
-                    cleanse()
-                    return
-                }
-            }
+        //     if (stack.length == 1) {
+        //         if (stack.at(-1).Value == "Joker") {
+        //             if (selected[0].Magical == false) {
+        //                 transferToStack()
+        //             } else {forfeit()} 
+        //             cleanse()
+        //             return
+        //         } else if (stack.at(-1).Value == 8) {
+        //             transferToStack()
+        //             cleanse()
+        //             return
+        //         } else if (stack.at(-1).Value == 7) {
+        //             if (selected[0].Value < 7 || selected[0].Magical == true) {
+        //                 transferToStack()
+        //                 cleanse()
+        //                 return
+        //             }
+        //         } else {
+        //             if (selected[0].Magical == true ||
+        //             values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
+        //                 transferToStack()            
+        //             } else {forfeit()} 
+        //             cleanse()
+        //             return
+        //         }
+        //     }
 
-            if (stack.length > 1) {
-                if (stack.at(-1).Value == "Joker" && stack.at(-2).Value != "Joker") {
-                    if (stack.at(-2).Value == 8) {
-                        if (stack.length > 2) {
+        //     if (stack.length > 1) {
+        //         if (stack.at(-1).Value == "Joker" && stack.at(-2).Value != "Joker") {
+        //             if (stack.at(-2).Value == 8) {
+        //                 if (stack.length > 2) {
 
-                        }
-                    }
-                } else if (stack.at(-1).Value == "Joker" && stack.at(-2).Value == "Joker") {
-                    if (stack.length > 2) {
-                        if (selected[0].Magical == false &&
-                        values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-3).Value) >= 0) {
+        //                 }
+        //             }
+        //         } else if (stack.at(-1).Value == "Joker" && stack.at(-2).Value == "Joker") {
+        //             if (stack.length > 2) {
+        //                 if (selected[0].Magical == false &&
+        //                 values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-3).Value) >= 0) {
 
-                        }
-                    } else {
-                        if (selected[0].Magical == false) {
-                            for (let i = 0; i<selected.length;i++) {
-                                let mid = selected[i]
-                                stack.push(mid)
-                            }
-                            if (stack.at(-1).Value == 10) {
-                                burn()
-                            }      
-                        } else {forfeit()} 
-                        cleanse()
-                        return
-                    }
-                }
-            }         
+        //                 }
+        //             } else {
+        //                 if (selected[0].Magical == false) {
+        //                     for (let i = 0; i<selected.length;i++) {
+        //                         let mid = selected[i]
+        //                         stack.push(mid)
+        //                     }
+        //                     if (stack.at(-1).Value == 10) {
+        //                         burn()
+        //                     }      
+        //                 } else {forfeit()} 
+        //                 cleanse()
+        //                 return
+        //             }
+        //         }
+        //     }         
                                            
-            if (stack.length == 0 || selected[0].Magical == true ||
-            values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
-                for (let i = 0; i<selected.length;i++) {
-                    let mid = selected[i]
-                    stack.push(mid)
-                }
-                if (stack.at(-1).Value == 10) {
-                    burn()      
-                }               
-            } else {forfeit()} 
-            cleanse()
+        //     if (stack.length == 0 || selected[0].Magical == true ||
+        //     values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
+        //         for (let i = 0; i<selected.length;i++) {
+        //             let mid = selected[i]
+        //             stack.push(mid)
+        //         }
+        //         if (stack.at(-1).Value == 10) {
+        //             burn()      
+        //         }               
+        //     } else {forfeit()} 
+        //     cleanse()
         }
 
         function forfeit() {
