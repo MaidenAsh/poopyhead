@@ -591,17 +591,32 @@
             ctx.fillText("Forfeit", 120, 570)    
         }
 
+        function transferToStack() {
+            // The transfers selected cards to stack
+            for (let i = 0; i<selected.length;i++) {
+                let mid = selected[i]
+                stack.push(mid)
+            }
+            if (stack.at(-1).Value == 10) {
+                burn()      
+            }  
+        }
+
+        function resolveEights() {
+            // Since 8s are 'transparent', the if statements required to resolve them get quite lengthy since
+            // the potential for multiple 8s must be considered. Separating out from playCards() to make it prettier.
+            if (stack.length == 1) {
+                transfertoStack()
+            } else if (stack.length > 1) {
+                if ()
+            }
+        }
+
         function playCards() {
             // Transfers selected cards to the stack, checks if the played cards are viable and 
             // forfeits on the player's behalf if they are not viable
             if (stack.length == 0) {
-                for (let i = 0; i<selected.length;i++) {
-                    let mid = selected[i]
-                    stack.push(mid)
-                }
-                if (stack.at(-1).Value == 10) {
-                    burn()      
-                }
+                transferToStack()
                 cleanse()
                 return
             }
@@ -609,70 +624,59 @@
             if (stack.length == 1) {
                 if (stack.at(-1).Value == "Joker") {
                     if (selected[0].Magical == false) {
-                        for (let i = 0; i<selected.length;i++) {
-                            let mid = selected[i]
-                            stack.push(mid)
-                        }
-                        if (stack.at(-1).Value == 10) {
-                            burn()
-                        }      
+                        transferToStack()
                     } else {forfeit()} 
                     cleanse()
                     return
                 } else if (stack.at(-1).Value == 8) {
-                    for (let i = 0; i<selected.length;i++) {
-                        let mid = selected[i]
-                        stack.push(mid)
-                    }
-                    if (stack.at(-1).Value == 10) {
-                        burn()      
-                    }
+                    transferToStack()
                     cleanse()
                     return
                 } else if (stack.at(-1).Value == 7) {
                     if (selected[0].Value < 7 || selected[0].Magical == true) {
-                        for (let i = 0; i<selected.length;i++) {
-                            let mid = selected[i]
-                            stack.push(mid)
-                        }
-                        if (stack.at(-1).Value == 10) {
-                            burn()      
-                        }
+                        transferToStack()
                         cleanse()
                         return
                     }
                 } else {
                     if (selected[0].Magical == true ||
                     values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
-                        for (let i = 0; i<selected.length;i++) {
-                            let mid = selected[i]
-                            stack.push(mid)
-                        }
-                        if (stack.at(-1).Value == 10) {
-                            burn()      
-                        }               
+                        transferToStack()            
                     } else {forfeit()} 
                     cleanse()
                     return
                 }
             }
 
-            if (stack.length>1) {
+            if (stack.length > 1) {
                 if (stack.at(-1).Value == "Joker" && stack.at(-2).Value != "Joker") {
-                    if (selected[0].Magical == false &&
-                    values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-2).Value) >= 0) {
-                        for (let i = 0; i<selected.length;i++) {
-                            let mid = selected[i]
-                            stack.push(mid)
+                    if (stack.at(-2).Value == 8) {
+                        if (stack.length > 2) {
+
                         }
-                        if (stack.at(-1).Value == 10) {
-                            burn()
-                        }      
-                    } else {forfeit()} 
-                    cleanse()
-                    return
+                    }
+                } else if (stack.at(-1).Value == "Joker" && stack.at(-2).Value == "Joker") {
+                    if (stack.length > 2) {
+                        if (selected[0].Magical == false &&
+                        values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-3).Value) >= 0) {
+
+                        }
+                    } else {
+                        if (selected[0].Magical == false) {
+                            for (let i = 0; i<selected.length;i++) {
+                                let mid = selected[i]
+                                stack.push(mid)
+                            }
+                            if (stack.at(-1).Value == 10) {
+                                burn()
+                            }      
+                        } else {forfeit()} 
+                        cleanse()
+                        return
+                    }
                 }
-            }                                        
+            }         
+                                           
             if (stack.length == 0 || selected[0].Magical == true ||
             values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
                 for (let i = 0; i<selected.length;i++) {
