@@ -110,9 +110,9 @@
         let handcard1 = [];
         let handcard2 = [];
         let selected = []; // List of selected cards
-        let stack = []; // Stack of cards in center
+        let stack = []; // Stack of cards in center     
 
-        canvas.addEventListener("click",selectCards);
+        canvas.addEventListener("click",selectCards);   
 
         function initGame() {
             gameRunning = true;     
@@ -197,10 +197,6 @@
                 
         function renderCards() {
             // Draws the cards and buttons onto the canvas
-            //ctx.fillText(handcard1[0].Selected,500,400)
-            //ctx.fillText(handcard1.length,600,400)
-            //ctx.fillText(upcard1.length,600,500)
-            //ctx.fillText(selected.length,400,400)
             for (let i = 0; i<downcard1.length; i++) {
                 let x = i*120 + 240
                 downcard1[i].x1 = x
@@ -268,10 +264,10 @@
             }           
 
             for (let i = 0; i<handcard2.length; i++) { 
-                let gap = ((400-(80*handcard2.length))/(handcard2.length + 1))
+                let gap = ((400-(80*handcard2.length))/(handcard2.length + 1))  
                 let interval = 80 + gap
-                let initial = 200 + gap
-                let x = i*interval + initial
+                let initial = 200 + gap     
+                let x = i*interval + initial    
                 ctx.drawImage(document.getElementById("blueBack"), x, 0, 80, 120)
             }
 
@@ -444,18 +440,19 @@
                     if (playable == true) {
                         if (event.offsetX > 620 && event.offsetX < 740
                         && event.offsetY > 530 && event.offsetY < 610) {
-                            playCards()
+                            playCards(1)
+                            botMove()
                         }   
                     }
                     // Forfeit button
                     if (forfeitable == true) {
                         if (event.offsetX > 60 && event.offsetX < 180
                         && event.offsetY > 530 && event.offsetY < 610) {
-                            forfeit()
+                            forfeit(1)
                         }
                     }
                 }
-            }                   
+            }              
             clear();
             checkFourInRow();
             draw();
@@ -493,6 +490,9 @@
             handcard1 = handcard1.filter((card) => card.Selected != true)
             upcard1 = upcard1.filter((card) => card.Selected != true)
             downcard1 = downcard1.filter((card) => card.Selected != true)
+            handcard2 = handcard2.filter((card) => card.Selected != true)
+            upcard2 = upcard2.filter((card) => card.Selected != true)
+            downcard2 = downcard2.filter((card) => card.Selected != true)
             selected = []
         }
 
@@ -638,12 +638,12 @@
             }
         }           
 
-        function playCards() {
+        function playCards(x) {
             if (stack.length > 0) {
                 if (compareCards(selected[0],stack.at(-1))) {
                     transferToStack()
                 } else {
-                    forfeit()
+                    forfeit(x)
                 }
             } else {
                 transferToStack()
@@ -651,12 +651,20 @@
             cleanse()  
         }
 
-        function forfeit() {
+        function forfeit(x) {
             // Transfers cards from stack to hand
-            handcard1 = handcard1.concat(stack)
-            burn()
-            for (let i = 0; i<handcard1.length;i++) {
-                handcard1[i].Selected = false
+            if (x == 1) {
+                handcard1 = handcard1.concat(stack)
+                burn()
+                for (let i = 0; i<handcard1.length;i++) {
+                    handcard1[i].Selected = false
+                }
+            } else if (x == 2) {
+                handcard2 = handcard2.concat(stack)
+                burn()
+                for (let i = 0; i<handcard2.length;i++) {
+                    handcard2[i].Selected = false
+                }
             }
         }                   
 
@@ -690,15 +698,67 @@
         }
 
         function botMove() {
-            if (p2 == true) {
-                if (stack.length == 0) {
-                    stack.push(handcard2.unshift())
+            if (stack.length == 0) {
+                // Selects all cards with the same value as the lowest value card
+                if (handcard2.length > 0) {
+                    for (let i = 0; i<handcard2.length; i++) {
+                        if (handcard2[i].Value == handcard2[0].Value) {
+                            handcard2[i].Selected = true
+                            selected.push(handcard2[i])
+                        }
+                    }
+                } else if (upcard2.length > 0 && handcard2.length == 0) {
+                    for (let i = 0; i<upcard2.length; i++) {
+                        if (upcard2[i].Value == upcard2[0].Value) {
+                            upcard2[i].Selected = true
+                            selected.push(upcard2[i])
+                        }
+                    }
+                } else if (upcard2.length == 0 && handcard2.length == 0) {
+                    downcard2[0].Selected = true
+                    selected.push(downcard2[0])
                 }
-
-                if (handcard2.length>0 && stack.length > 0) {
+            } else if (stack.length > 0) {
+                // Searches for a valid card to play, forfeits if none found
+                // Plays all copies of the same value card if valid card available
+                if (handcard2.length > 0) {
                     let chosen = handcard2.findIndex((x) => compareCards(x,stack.at(-1) == true))
+                    if (chosen == -1) {
+                        forfeit(2)
+                    } else if (chosen != -1) {
+                        let chosenVal = handcard2.at(chosen).Value
+                        for (let i = 0; i<handcard2.length; i++) {
+                            if (handcard2[i].Value == chosenVal) {
+                                handcard2[i].Selected = true
+                                selected.push(handcard2[i])
+                            }
+                        }
+                    }
+                } else if (upcard2.length > 0 && handcard2.length == 0) {
+                    let chosen = upcard2.findIndex((x) => compareCards(x,stack.at(-1) == true))
+                    if (chosen == -1) {
+                        forfeit(2)
+                    } else if (chosen != -1) {
+                        let chosenVal = upcard2.at(chosen).Value
+                        for (let i = 0; i<upcard2.length; i++) {
+                            if (upcard2[i].Value == chosenVal) {
+                                upcard2[i].Selected = true
+                                selected.push(upcard2[i])
+                            }
+                        }
+                    }
+                } else if (upcard2.length == 0 && handcard2.length == 0) {
+                    downcard2[0].Selected = true
+                    selected.push(downcard2[0])
                 }
             }
+            playCards(2);
+            clear();
+            checkFourInRow();
+            draw();
+            sortHand();        
+            renderCards();
+            checkVictory();
         }
 
     </script>
