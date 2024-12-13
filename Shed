@@ -111,6 +111,7 @@
         let handcard2 = [];
         let selected = []; // List of selected cards
         let stack = []; // Stack of cards in center
+        let test;
 
         canvas.addEventListener("click",selectCards);
 
@@ -461,8 +462,9 @@
             draw();
             sortHand();        
             renderCards();
+            ctx.fillText(test, 200, 400)
             checkVictory();
-        }           
+        }               
 
         function sortHand() {
             // Sorts hand via values array
@@ -616,6 +618,7 @@
                 }                   
             } else if (b.Value == "8") {
                 let index = stack.findLastIndex((x) => x.Value != "8")
+                let test = "8 triggered"
                 if (index != -1) {          
                     compareCards(a,stack.at(index))
                 } else if (index == -1) {
@@ -647,8 +650,7 @@
             } else {
                 transferToStack()
             }
-            cleanse()   
-
+            cleanse()  
             // Transfers selected cards to the stack, checks if the played cards are viable and 
             // forfeits on the player's behalf if they are not viable
         //     if (stack.length == 0) {
