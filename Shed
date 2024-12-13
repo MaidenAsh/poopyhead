@@ -111,7 +111,6 @@
         let handcard2 = [];
         let selected = []; // List of selected cards
         let stack = []; // Stack of cards in center
-        let test;
 
         canvas.addEventListener("click",selectCards);
 
@@ -462,9 +461,8 @@
             draw();
             sortHand();        
             renderCards();
-            ctx.fillText(test, 200, 400)
             checkVictory();
-        }               
+        }                   
 
         function sortHand() {
             // Sorts hand via values array
@@ -611,20 +609,19 @@
                     return false    
                 } else if (a.Magical == false) {
                     if (stack.findLastIndex((x) => x.Value != "Joker") != -1) {
-                        compareCards(a,stack.at(stack.findLastIndex((x) => x.Value != "Joker")))
+                        return compareCards(a,stack.at(stack.findLastIndex((x) => x.Value != "Joker")))
                     } else if (stack.findLastIndex((x) => x.Value != "Joker") == -1) {
                         return true 
                     }
                 }                   
             } else if (b.Value == "8") {
                 let index = stack.findLastIndex((x) => x.Value != "8")
-                let test = "8 triggered"
-                if (index != -1) {          
-                    compareCards(a,stack.at(index))
+                if (index != -1) {  
+                    return compareCards(a,stack.at(index))
                 } else if (index == -1) {
                     return true 
                 }           
-            } else if (b.Value == "7") {
+            } else if (b.Value == "7") {                
                 if (a.Magical == true || a.Value < 7) {
                     return true
                 } else {
@@ -651,81 +648,6 @@
                 transferToStack()
             }
             cleanse()  
-            // Transfers selected cards to the stack, checks if the played cards are viable and 
-            // forfeits on the player's behalf if they are not viable
-        //     if (stack.length == 0) {
-        //         transferToStack()
-        //         cleanse()
-        //         return
-        //     }
-
-        //     if (stack.length == 1) {
-        //         if (stack.at(-1).Value == "Joker") {
-        //             if (selected[0].Magical == false) {
-        //                 transferToStack()
-        //             } else {forfeit()} 
-        //             cleanse()
-        //             return
-        //         } else if (stack.at(-1).Value == 8) {
-        //             transferToStack()
-        //             cleanse()
-        //             return
-        //         } else if (stack.at(-1).Value == 7) {
-        //             if (selected[0].Value < 7 || selected[0].Magical == true) {
-        //                 transferToStack()
-        //                 cleanse()
-        //                 return
-        //             }
-        //         } else {
-        //             if (selected[0].Magical == true ||
-        //             values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
-        //                 transferToStack()            
-        //             } else {forfeit()} 
-        //             cleanse()
-        //             return
-        //         }
-        //     }
-
-        //     if (stack.length > 1) {
-        //         if (stack.at(-1).Value == "Joker" && stack.at(-2).Value != "Joker") {
-        //             if (stack.at(-2).Value == 8) {
-        //                 if (stack.length > 2) {
-
-        //                 }
-        //             }
-        //         } else if (stack.at(-1).Value == "Joker" && stack.at(-2).Value == "Joker") {
-        //             if (stack.length > 2) {
-        //                 if (selected[0].Magical == false &&
-        //                 values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-3).Value) >= 0) {
-
-        //                 }
-        //             } else {
-        //                 if (selected[0].Magical == false) {
-        //                     for (let i = 0; i<selected.length;i++) {
-        //                         let mid = selected[i]
-        //                         stack.push(mid)
-        //                     }
-        //                     if (stack.at(-1).Value == 10) {
-        //                         burn()
-        //                     }      
-        //                 } else {forfeit()} 
-        //                 cleanse()
-        //                 return
-        //             }
-        //         }
-        //     }         
-                                           
-        //     if (stack.length == 0 || selected[0].Magical == true ||
-        //     values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
-        //         for (let i = 0; i<selected.length;i++) {
-        //             let mid = selected[i]
-        //             stack.push(mid)
-        //         }
-        //         if (stack.at(-1).Value == 10) {
-        //             burn()      
-        //         }               
-        //     } else {forfeit()} 
-        //     cleanse()
         }
 
         function forfeit() {
