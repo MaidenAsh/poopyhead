@@ -20,9 +20,7 @@
        let ch = 120;
        let test1 = []
        let test2 = [4,5]
-       test1 = test1.concat(test2)
-       test2 = []
-       console.log(test1)
+       console.log(test1.at(-1).Value)
        console.log(test2)
     
 

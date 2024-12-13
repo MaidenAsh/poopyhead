@@ -95,7 +95,9 @@
         var values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]; 
         let gameRunning;
         let swapping;
-        let swappable = false;
+        let p1 = false;
+        let p2 = false;
+        let swappable = false;  // -able variables to enable buttons
         let readyable = true;
         let playable = false;
         let forfeitable = false;
@@ -107,7 +109,7 @@
         let upcard2 = [];
         let handcard1 = [];
         let handcard2 = [];
-        let selected = []; 
+        let selected = []; // List of selected cards
         let stack = []; // Stack of cards in center
 
         canvas.addEventListener("click",selectCards);
@@ -158,6 +160,7 @@
         }
 
         function deal() {
+            // 3 downcards and 3 upcards to each player
             while (downcard1.length<3) {
                 downcard1.push(deck.pop())
             }
@@ -173,6 +176,7 @@
         }
 
         function draw() {
+            // Draws until 3 cards in hand, as long as there's cards in the deck
             if (deck.length == 0) {
                 return
             }
@@ -186,11 +190,13 @@
         }
 
         function formString(card) {
+            // Uses a card's suit and value to form a string to facilitate calling an image via ID
             let string = ''
             return string += card.Suit + card.Value
         }
                 
         function renderCards() {
+            // Draws the cards and buttons onto the canvas
             //ctx.fillText(handcard1[0].Selected,500,400)
             //ctx.fillText(handcard1.length,600,400)
             //ctx.fillText(upcard1.length,600,500)
@@ -316,6 +322,7 @@
         }          
 
         function selectCards() {    
+            // Handles all clicking, key function for the game loop
             if (gameRunning == true) {
                 // Initial swap phase
                 if (swapping == true && selected.length<=2) {
@@ -458,6 +465,7 @@
         }           
 
         function sortHand() {
+            // Sorts hand via values array
             handcard1.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
         }
         
@@ -467,6 +475,7 @@
         }
 
         function swapCards() {
+            // Swaps cards during swap phase
             if(selected.length == 2) {
                 let hand = selected.filter((x) => handcard1.includes(x)).pop()
                 let up = selected.filter((x) => upcard1.includes(x)).pop()
@@ -479,7 +488,7 @@
         }
 
         function cleanse() {
-            // Removes selected cards from player's cards
+            // Removes selected cards from player's cards and empties selected array
             handcard1 = handcard1.filter((card) => card.Selected != true)
             upcard1 = upcard1.filter((card) => card.Selected != true)
             downcard1 = downcard1.filter((card) => card.Selected != true)
@@ -487,6 +496,7 @@
         }
 
         function drawSwapButton() {
+            // Renders on left side
             ctx.fillStyle = "#970101"
             ctx.roundRect(60, 530, 120, 80, 5)                                               
             ctx.fill()
@@ -510,6 +520,7 @@
         }
 
         function drawReadyButton() {
+            // Renders on right side
             ctx.fillStyle = "#970101"
             ctx.roundRect(620, 530, 120, 80, 5)                                               
             ctx.fill()
@@ -533,6 +544,7 @@
         }
 
         function drawPlayButton() {
+            // Renders on right side
             ctx.fillStyle = "#970101"
             ctx.roundRect(620, 530, 120, 80, 5)                                               
             ctx.fill()
@@ -556,6 +568,7 @@
         }
 
         function drawForfeitButton() {
+            // Renders on left side
             ctx.fillStyle = "#970101"
             ctx.roundRect(60, 530, 120, 80, 5)                                               
             ctx.fill()
@@ -579,22 +592,100 @@
         }
 
         function playCards() {
-            // Transfers selected cards to the stack
+            // Transfers selected cards to the stack, checks if the played cards are viable and 
+            // forfeits on the player's behalf if they are not viable
+            if (stack.length == 0) {
+                for (let i = 0; i<selected.length;i++) {
+                    let mid = selected[i]
+                    stack.push(mid)
+                }
+                if (stack.at(-1).Value == 10) {
+                    burn()      
+                }
+                cleanse()
+                return
+            }
+
+            if (stack.length == 1) {
+                if (stack.at(-1).Value == "Joker") {
+                    if (selected[0].Magical == false) {
+                        for (let i = 0; i<selected.length;i++) {
+                            let mid = selected[i]
+                            stack.push(mid)
+                        }
+                        if (stack.at(-1).Value == 10) {
+                            burn()
+                        }      
+                    } else {forfeit()} 
+                    cleanse()
+                    return
+                } else if (stack.at(-1).Value == 8) {
+                    for (let i = 0; i<selected.length;i++) {
+                        let mid = selected[i]
+                        stack.push(mid)
+                    }
+                    if (stack.at(-1).Value == 10) {
+                        burn()      
+                    }
+                    cleanse()
+                    return
+                } else if (stack.at(-1).Value == 7) {
+                    if (selected[0].Value < 7 || selected[0].Magical == true) {
+                        for (let i = 0; i<selected.length;i++) {
+                            let mid = selected[i]
+                            stack.push(mid)
+                        }
+                        if (stack.at(-1).Value == 10) {
+                            burn()      
+                        }
+                        cleanse()
+                        return
+                    }
+                } else {
+                    if (selected[0].Magical == true ||
+                    values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
+                        for (let i = 0; i<selected.length;i++) {
+                            let mid = selected[i]
+                            stack.push(mid)
+                        }
+                        if (stack.at(-1).Value == 10) {
+                            burn()      
+                        }               
+                    } else {forfeit()} 
+                    cleanse()
+                    return
+                }
+            }
+
+            if (stack.length>1) {
+                if (stack.at(-1).Value == "Joker" && stack.at(-2).Value != "Joker") {
+                    if (selected[0].Magical == false &&
+                    values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-2).Value) >= 0) {
+                        for (let i = 0; i<selected.length;i++) {
+                            let mid = selected[i]
+                            stack.push(mid)
+                        }
+                        if (stack.at(-1).Value == 10) {
+                            burn()
+                        }      
+                    } else {forfeit()} 
+                    cleanse()
+                    return
+                }
+            }                                        
             if (stack.length == 0 || selected[0].Magical == true ||
             values.findIndex((x) => x == selected[0].Value) - values.findIndex((x) => x == stack.at(-1).Value) >= 0) {
                 for (let i = 0; i<selected.length;i++) {
                     let mid = selected[i]
                     stack.push(mid)
-                    //cleanse()
                 }
                 if (stack.at(-1).Value == 10) {
-                    burn()
-                }      
-            } else {forfeit()}
-            //checkFourInRow()        
+                    burn()      
+                }               
+            } else {forfeit()} 
             cleanse()
         }
-    
+
         function forfeit() {
             // Transfers cards from stack to hand
             handcard1 = handcard1.concat(stack)
@@ -623,6 +714,7 @@
         }   
 
         function checkFourInRow() {
+            // Burns if there's 4 cards in a row on the stack of the same value
             if (stack.length >= 4) {
                 if (stack.at(-4).Value == stack.at(-3).Value && 
                 stack.at(-3).Value == stack.at(-2).Value &&
