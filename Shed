@@ -602,13 +602,34 @@
             }  
         }
 
-        function resolveEights() {
-            // Since 8s are 'transparent', the if statements required to resolve them get quite lengthy since
-            // the potential for multiple 8s must be considered. Separating out from playCards() to make it prettier.
-            if (stack.length == 1) {
-                transfertoStack()
-            } else if (stack.length > 1) {
-                if ()
+        function compareCards(a,b) {
+            // Compares the selected card(s), a, with the top card in the stack, b
+            if (b.Value == "Joker") {
+                if (a.Magical == true) {
+                    return false
+                } else if (a.Magical == false) {
+                    if (stack.findIndex((x) => x != "Joker") != -1) {
+                        compareCards(a,stack.at(stack.findIndex((x) => x != "Joker")))
+                    } else if (stack.findIndex((x) => x != "Joker") == -1) {
+                        return true 
+                    }
+                }
+            }
+
+            if (b.Value == "8") {
+                if (stack.findIndex((x) => x != "8") != -1) {
+                    compareCards(a,stack.at(stack.findIndex((x) => x != "8")))
+                } else if (stack.findIndex((x) => x != "8") == -1) {
+                    return true 
+                }
+            }
+
+            if (b.Value == "7") {
+                if (a.Magical == true || a.Value < 7) {
+                    return true
+                } else {
+                    return false
+                }
             }
         }
 
