@@ -218,8 +218,8 @@
             for (let i = 0; i<downcard2.length; i++) {
                 let x = i*120 + 240
                 ctx.drawImage(document.getElementById("blueBack"), x, 170, 80, 120)
-            }    
-            
+            }       
+
             for (let i = 0; i<upcard1.length; i++) {
                 let s = formString(upcard1[i])
                 let x = i*120 + 240
@@ -486,8 +486,12 @@
             clear();
             draw();
             sortHand();
-            drawMessage(msg1,"left");
-            drawMessage(msg2,"right");
+            if (msg1 != "") {
+               drawMessage(msg1,"left"); 
+            }
+            if (msg2 != "") {
+               drawMessage(msg2,"right"); 
+            }
             renderCards();
             checkVictory();
         }                   
@@ -729,7 +733,8 @@
                 msg2 = msgString
             ]
             cleanse()
-            checkFourInRow()  
+            checkFourInRow()
+            changeTurn()  
         }
 
         function forfeit(x) {
