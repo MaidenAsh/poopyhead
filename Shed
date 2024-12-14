@@ -185,9 +185,9 @@
             }
             while (handcard1.length<3) {
                 handcard1.push(deck.pop())
-            }                               
+            }                                   
 
-            while (handcard2.length<3) {
+            while (handcard2.length<36) {
                 handcard2.push(deck.pop())
             }
         }
@@ -322,7 +322,6 @@
         }          
 
         function selectCards() {  
-            clear();
             // Handles all clicking, key function for the game loop
             if (gameRunning == true) {
                 // Initial swap phase
@@ -457,7 +456,34 @@
                         }
                     }
                 }
-            }          
+            } else if (gameRunning == false) {
+                if (replayable == true) {
+                    if (event.offsetX > 340 && event.offsetX < 460
+                    && event.offsetY > 420 && event.offsetY < 500) {
+                        clear()
+                        p1 = false;
+                        p2 = false;
+                        swappable = false;  // -able variables to enable buttons
+                        readyable = true;
+                        playable = false;
+                        forfeitable = false;
+                        replayable = false;
+                        deck = [];
+                        downcard1 = [];
+                        downcard2 = []; 
+                        upcard1 = [];
+                        upcard2 = [];
+                        handcard1 = [];
+                        handcard2 = [];
+                        selected = []; // List of selected cards
+                        stack = []; // Stack of cards in center
+                        msg1 = "";
+                        msg2 = "";
+                        initGame()
+                    }
+                }
+            }
+            clear();
             checkFourInRow();
             draw();
             sortHand();
@@ -504,7 +530,7 @@
 
         function drawSwapButton() {
             // Renders on left side
-            ctx.fillStyle = "#970101"
+            ctx.fillStyle = "#ff2b2b"
             ctx.roundRect(60, 530, 120, 80, 5)                                               
             ctx.fill()
             ctx.strokeStyle = "black"
@@ -527,8 +553,8 @@
         }
 
         function drawReadyButton() {
-            // Renders on right side
-            ctx.fillStyle = "#970101"
+            // Renders on right side    
+            ctx.fillStyle = "#ff2b2b"
             ctx.roundRect(620, 530, 120, 80, 5)                                               
             ctx.fill()
             ctx.strokeStyle = "black"
@@ -552,7 +578,7 @@
 
         function drawPlayButton() {
             // Renders on right side
-            ctx.fillStyle = "#970101"
+            ctx.fillStyle = "#ff2b2b"
             ctx.roundRect(620, 530, 120, 80, 5)                                               
             ctx.fill()
             ctx.strokeStyle = "black"
@@ -576,7 +602,7 @@
 
         function drawForfeitButton() {
             // Renders on left side
-            ctx.fillStyle = "#970101"
+            ctx.fillStyle = "#ff2b2b"
             ctx.roundRect(60, 530, 120, 80, 5)                                               
             ctx.fill()
             ctx.strokeStyle = "black"
@@ -596,6 +622,29 @@
             ctx.fillStyle ="black"
             ctx.font = "bold 30px Times New Roman"
             ctx.fillText("Forfeit", 120, 570)    
+        }
+
+        function drawReplayButton() {
+            ctx.fillStyle = "#ff2b2b"
+            ctx.roundRect(340, 420, 120, 80, 5)                                               
+            ctx.fill()
+            ctx.strokeStyle = "black"
+            ctx.lineWidth = 5
+            ctx.lineJoin = "round"
+            ctx.strokeRect(340, 420, 120, 80)
+            ctx.beginPath();
+            ctx.moveTo(340,460);
+            ctx.lineTo(460,460);
+            ctx.closePath();
+            ctx.textBaseline = "middle"
+            ctx.beginPath();
+            ctx.moveTo(400,420);
+            ctx.lineTo(400,500);
+            ctx.closePath();
+            ctx.textAlign = "center"
+            ctx.fillStyle ="black"  
+            ctx.font = "bold 30px Times New Roman"
+            ctx.fillText("Play Again?", 400, 460)
         }
 
         function transferToStack() {
@@ -706,15 +755,21 @@
 
         function checkVictory() {
             if (downcard1.length == 0 && upcard1.length == 0 && handcard1.length == 0) {
+                gameRunning = false
+                replayable = true
                 clear()
                 ctx.font = "bold italics 100px Times New Roman"
-                ctx.fillText("You Win!", 400, 400)
+                ctx.fillText("You Win!", 400, 300)
+                drawReplayButton()
             }
 
             if (downcard2.length == 0 && upcard2.length == 0 && handcard2.length == 0) {
+                gameRunning = false
+                replayable = true
                 clear()     
                 ctx.font = "bold italics 100px Times New Roman"
                 ctx.fillText("You Lose!", 400, 400)
+                drawReplayButton()
             }
         }   
 
@@ -767,7 +822,7 @@
                         }
                     }
                 } else if (upcard2.length > 0 && handcard2.length == 0) {
-                    let chosen = upcard2.findIndex((x) => compareCards(x,stack.at(-1) == true))
+                    let chosen = upcard2.findIndex((x) => compareCards(x,stack.at(-1)) == true)
                     if (chosen == -1) {
                         forfeit(2)
                     } else if (chosen != -1) {
@@ -810,6 +865,45 @@
             ctx.fillStyle ="black"
             ctx.font = "15px Times New Roman"
             ctx.fillText(message, x+75, 400)  
+        }
+
+        function formMessage(x) {
+            let msgString = ""
+            if (x == 1) {
+                msgString += "Player 1 played "
+            } else if (x == 2) [
+                msgString += "Player 2 played "
+            ]
+            switch(selected.length) {
+                case 1:
+                    msgString += "one " + (selected[0].Value).toString() + "."
+                    break;
+                case 2:
+                    msgString += "two " + (selected[0].Value).toString() + "s."
+                    break;
+                case 3:
+                    msgString += "three " + (selected[0].Value).toString() + "s."
+                    break;
+                case 4:
+                    msgString += "four " + (selected[0].Value).toString() + "s."
+                    break;
+            }
+            if (x == 1) {
+                msg1 = msgString
+            } else if (x == 2) [
+                msg2 = msgString
+            ] 
+        }
+
+        function changeTurn() {
+            // Swaps over the turns
+            if (p1 == true && p2 == false) {
+                p1 = false
+                p2 = true
+            } else if (p1 == false && p2 == true) {
+                p1 = true
+                p2 = false
+            }
         }
 
     </script>
