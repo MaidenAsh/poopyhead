@@ -113,7 +113,7 @@
         let stack = []; // Stack of cards in center
         let msg1 = "";
         let msg2 = "";
-
+        
         canvas.addEventListener("click",selectCards);   
 
         function initGame() {
