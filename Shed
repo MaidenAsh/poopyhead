@@ -111,8 +111,8 @@
         let handcard2 = [];
         let selected = []; // List of selected cards
         let stack = []; // Stack of cards in center
-        let message = "";
-        let pos = "";
+        let msg1 = "";
+        let msg2 = "";
 
         canvas.addEventListener("click",selectCards);   
 
@@ -446,9 +446,7 @@
                         if (event.offsetX > 620 && event.offsetX < 740
                         && event.offsetY > 530 && event.offsetY < 610) {
                             playCards(1)
-                            drawMessage(message,pos);
                             botMove()
-                            drawMessage(message,pos);
                         }   
                     }
                     // Forfeit button
@@ -459,11 +457,12 @@
                         }
                     }
                 }
-            }              
-            //clear();
+            }          
             checkFourInRow();
             draw();
             sortHand();
+            drawMessage(msg1,"left");
+            drawMessage(msg2,"right");
             renderCards();
             checkVictory();
         }                   
@@ -656,7 +655,6 @@
                 transferToStack()
             }
 
-            pos = x == 1 ? "left" : "right"
             let msgString = ""
             if (x == 1) {
                 msgString += "Player 1 played "
@@ -677,7 +675,11 @@
                     msgString += "four " + (selected[0].Value).toString() + "s."
                     break;
             }
-            message = msgString
+            if (x == 1) {
+                msg1 = msgString
+            } else if (x == 2) [
+                msg2 = msgString
+            ]
             cleanse()  
         }
 
