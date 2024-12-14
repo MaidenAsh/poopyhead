@@ -18,6 +18,9 @@
         let stack = []; 
         let cw = 80;
         let ch = 120;
+        let pos = "left"
+        let x = pos == "left" ? 75 : 575
+        console.log(x)
 
         function initGame() {
             gameRunning = true;

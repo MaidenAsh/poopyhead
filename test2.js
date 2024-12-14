@@ -18,10 +18,9 @@
        let stack = []; 
        let cw = 80;
        let ch = 120;
-       let test1 = []
-       let test2 = [4,5]
-       console.log(test1.at(-1).Value)
-       console.log(test2)
+       pos = "right"
+       let x = pos == "left" ? 75 : 575
+    console.log(x)
     
 
        function initGame() {

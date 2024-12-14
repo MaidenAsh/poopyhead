@@ -110,16 +110,18 @@
         let handcard1 = [];
         let handcard2 = [];
         let selected = []; // List of selected cards
-        let stack = []; // Stack of cards in center     
-        let test = ""
+        let stack = []; // Stack of cards in center
+        let message = "";
+        let pos = "";
 
         canvas.addEventListener("click",selectCards);   
 
         function initGame() {
             gameRunning = true;     
-            swapping = true 
+            swapping = true;
+            p1 = true;
             createDeck(deck);
-            values.push("Joker") // Facilitates sorting cards in hand
+            values.push("Joker"); // Facilitates sorting cards in hand
             deal();                   
             draw();        
             sortHand();              
@@ -319,7 +321,8 @@
 
         }          
 
-        function selectCards() {    
+        function selectCards() {  
+            clear();
             // Handles all clicking, key function for the game loop
             if (gameRunning == true) {
                 // Initial swap phase
@@ -443,7 +446,9 @@
                         if (event.offsetX > 620 && event.offsetX < 740
                         && event.offsetY > 530 && event.offsetY < 610) {
                             playCards(1)
+                            drawMessage(message,pos);
                             botMove()
+                            drawMessage(message,pos);
                         }   
                     }
                     // Forfeit button
@@ -455,11 +460,10 @@
                     }
                 }
             }              
-            clear();
-            ctx.fillText(test, 200, 400)
+            //clear();
             checkFourInRow();
             draw();
-            sortHand();        
+            sortHand();
             renderCards();
             checkVictory();
         }                   
@@ -651,6 +655,15 @@
             } else {
                 transferToStack()
             }
+            pos = x == 1 ? "left" : "right"
+            let msgString = ""
+            if (x == 1) {
+                msgString += "Player 1 played "
+            } else if (x == 2) [
+                msgString += "Player 2 played "
+            ]
+            msgString += (selected.length).toString() + " " + (selected[0].Value).toString() + "s."
+            message = msgString
             cleanse()  
         }
 
@@ -705,7 +718,6 @@
                 // Selects all cards with the same value as the lowest value card
                 if (handcard2.length > 0) {
                     for (let i = 0; i<handcard2.length; i++) {
-                        test = "handcard2 pt1"
                         if (handcard2[i].Value == handcard2[0].Value) {
                             handcard2[i].Selected = true
                             selected.push(handcard2[i])
@@ -727,13 +739,10 @@
                 // Plays all copies of the same value card if valid card available
                 if (handcard2.length > 0) {
                     let chosen = handcard2.findIndex((x) => compareCards(x,stack.at(-1)) == true)
-                    test = chosen.toString()
                     if (chosen == -1) {
-                        //test = "no valid cards"
                         forfeit(2)
                     } else if (chosen != -1) {
                         let chosenVal = handcard2.at(chosen).Value
-                        //test = chosenVal.toString()
                         for (let i = 0; i<handcard2.length; i++) {
                             if (handcard2[i].Value == chosenVal) {
                                 handcard2[i].Selected = true
@@ -760,12 +769,31 @@
                 }
             }
             playCards(2);
-            // clear();
-            // checkFourInRow();
-            // draw();
-            // sortHand();        
-            // renderCards();
-            // checkVictory();
+        }
+
+        function drawMessage(message,pos) {
+            let x = pos == "left" ? 75 : 575
+            let y = 350;
+            ctx.fillStyle = "#FDFD96"
+            ctx.roundRect(x, y, 150, 100, 5)                                               
+            ctx.fill()
+            ctx.strokeStyle = "black"
+            ctx.lineWidth = 5
+            ctx.lineJoin = "round"
+            ctx.strokeRect(x, y, 150, 100)
+            ctx.beginPath();
+            ctx.moveTo(x,400);
+            ctx.lineTo(x+150,400);
+            ctx.closePath();
+            ctx.textBaseline = "middle"
+            ctx.beginPath();
+            ctx.moveTo(x+75,350);
+            ctx.lineTo(x+75,450);
+            ctx.closePath();
+            ctx.textAlign = "center"
+            ctx.fillStyle ="black"
+            ctx.font = "bold 30px Times New Roman"
+            ctx.fillText(message, x+75, 400)  
         }
 
     </script>
