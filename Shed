@@ -111,6 +111,7 @@
         let handcard2 = [];
         let selected = []; // List of selected cards
         let stack = []; // Stack of cards in center     
+        let test = ""
 
         canvas.addEventListener("click",selectCards);   
 
@@ -455,6 +456,7 @@
                 }
             }              
             clear();
+            ctx.fillText(test, 200, 400)
             checkFourInRow();
             draw();
             sortHand();        
@@ -703,6 +705,7 @@
                 // Selects all cards with the same value as the lowest value card
                 if (handcard2.length > 0) {
                     for (let i = 0; i<handcard2.length; i++) {
+                        test = "handcard2 pt1"
                         if (handcard2[i].Value == handcard2[0].Value) {
                             handcard2[i].Selected = true
                             selected.push(handcard2[i])
@@ -723,11 +726,14 @@
                 // Searches for a valid card to play, forfeits if none found
                 // Plays all copies of the same value card if valid card available
                 if (handcard2.length > 0) {
-                    let chosen = handcard2.findIndex((x) => compareCards(x,stack.at(-1) == true))
+                    let chosen = handcard2.findIndex((x) => compareCards(x,stack.at(-1)) == true)
+                    test = chosen.toString()
                     if (chosen == -1) {
+                        //test = "no valid cards"
                         forfeit(2)
                     } else if (chosen != -1) {
                         let chosenVal = handcard2.at(chosen).Value
+                        //test = chosenVal.toString()
                         for (let i = 0; i<handcard2.length; i++) {
                             if (handcard2[i].Value == chosenVal) {
                                 handcard2[i].Selected = true
@@ -754,12 +760,12 @@
                 }
             }
             playCards(2);
-            clear();
-            checkFourInRow();
-            draw();
-            sortHand();        
-            renderCards();
-            checkVictory();
+            // clear();
+            // checkFourInRow();
+            // draw();
+            // sortHand();        
+            // renderCards();
+            // checkVictory();
         }
 
     </script>
