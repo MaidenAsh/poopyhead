@@ -14,7 +14,7 @@
             background-image: url(images/bg2.jpg);
         }
         #shedCanvas {
-            border: 1px solid black;
+            border: 3px solid black;
             border-radius: 15px;
             background-image: url(images/bg.jpg);
             background-size: 800px 800px;
@@ -123,7 +123,7 @@
             createDeck(deck);
             values.push("Joker"); // Facilitates sorting cards in hand
             deal();                   
-            draw();        
+            draw();         
             sortHand();              
             renderCards();
             //ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
@@ -187,7 +187,7 @@
                 handcard1.push(deck.pop())
             }                                   
 
-            while (handcard2.length<36) {
+            while (handcard2.length<3) {
                 handcard2.push(deck.pop())
             }
         }
@@ -484,7 +484,6 @@
                 }
             }
             clear();
-            checkFourInRow();
             draw();
             sortHand();
             drawMessage(msg1,"left");
@@ -729,7 +728,8 @@
             } else if (x == 2) [
                 msg2 = msgString
             ]
-            cleanse()  
+            cleanse()
+            checkFourInRow()  
         }
 
         function forfeit(x) {
