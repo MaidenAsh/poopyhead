@@ -655,6 +655,7 @@
             } else {
                 transferToStack()
             }
+
             pos = x == 1 ? "left" : "right"
             let msgString = ""
             if (x == 1) {
@@ -662,7 +663,20 @@
             } else if (x == 2) [
                 msgString += "Player 2 played "
             ]
-            msgString += (selected.length).toString() + " " + (selected[0].Value).toString() + "s."
+            switch(selected.length) {
+                case 1:
+                    msgString += "one " + (selected[0].Value).toString() + "."
+                    break;
+                case 2:
+                    msgString += "two " + (selected[0].Value).toString() + "s."
+                    break;
+                case 3:
+                    msgString += "three " + (selected[0].Value).toString() + "s."
+                    break;
+                case 4:
+                    msgString += "four " + (selected[0].Value).toString() + "s."
+                    break;
+            }
             message = msgString
             cleanse()  
         }
@@ -792,7 +806,7 @@
             ctx.closePath();
             ctx.textAlign = "center"
             ctx.fillStyle ="black"
-            ctx.font = "bold 30px Times New Roman"
+            ctx.font = "15px Times New Roman"
             ctx.fillText(message, x+75, 400)  
         }
 
