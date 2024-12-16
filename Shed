@@ -657,7 +657,7 @@
                 stack.push(mid)
             }
             if (stack.at(-1).Value == 10) {
-                burn()      
+                burn(x)      
             }  
         }
 
@@ -733,7 +733,7 @@
                 msg2 = msgString
             ]
             cleanse()
-            checkFourInRow()
+            checkFourInRow(x)
             changeTurn()  
         }
 
@@ -741,21 +741,28 @@
             // Transfers cards from stack to hand
             if (x == 1) {
                 handcard1 = handcard1.concat(stack)
-                burn()
+                stack = []
+                msg1 = "Player 1 picked up the stack!"
                 for (let i = 0; i<handcard1.length;i++) {
                     handcard1[i].Selected = false
                 }
             } else if (x == 2) {
                 handcard2 = handcard2.concat(stack)
-                burn()
+                stack = []
+                msg2 = "Player 2 picked up the stack!"
                 for (let i = 0; i<handcard2.length;i++) {
                     handcard2[i].Selected = false
                 }
-            }
+            }   
         }                   
 
-        function burn() {       
+        function burn(x) {       
             stack = []
+            if (x == 1) {
+                msg1 = "Player 1 burned the deck!"
+            } else if (x == 2) [
+                msg2 = "Player 2 burned the deck!"
+            ]
         }
 
         function checkVictory() {
@@ -778,13 +785,13 @@
             }
         }   
 
-        function checkFourInRow() {
+        function checkFourInRow(x) {
             // Burns if there's 4 cards in a row on the stack of the same value
             if (stack.length >= 4) {
                 if (stack.at(-4).Value == stack.at(-3).Value && 
                 stack.at(-3).Value == stack.at(-2).Value &&
                 stack.at(-2).Value == stack.at(-1).Value) {
-                    burn()
+                    burn(x)
                 }
             }
         }
@@ -870,34 +877,6 @@
             ctx.fillStyle ="black"
             ctx.font = "15px Times New Roman"
             ctx.fillText(message, x+75, 400)  
-        }
-
-        function formMessage(x) {
-            let msgString = ""
-            if (x == 1) {
-                msgString += "Player 1 played "
-            } else if (x == 2) [
-                msgString += "Player 2 played "
-            ]
-            switch(selected.length) {
-                case 1:
-                    msgString += "one " + (selected[0].Value).toString() + "."
-                    break;
-                case 2:
-                    msgString += "two " + (selected[0].Value).toString() + "s."
-                    break;
-                case 3:
-                    msgString += "three " + (selected[0].Value).toString() + "s."
-                    break;
-                case 4:
-                    msgString += "four " + (selected[0].Value).toString() + "s."
-                    break;
-            }
-            if (x == 1) {
-                msg1 = msgString
-            } else if (x == 2) [
-                msg2 = msgString
-            ] 
         }
 
         function changeTurn() {
