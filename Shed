@@ -676,6 +676,8 @@
                 msg2 = msgString
             ]
 
+            changeTurn()
+
             if (stack.at(-1).Value == 10) {
                 burn(x)      
             }  
@@ -728,7 +730,6 @@
             }
             cleanse()
             checkFourInRow(x)
-            changeTurn()  
         }
 
         function forfeit(x) {
@@ -748,6 +749,7 @@
                     handcard2[i].Selected = false
                 }
             }   
+            changeTurn()
         }                   
 
         function burn(x) {       
@@ -757,6 +759,7 @@
             } else if (x == 2) [
                 msg2 = "burned the stack!"
             ]
+            changeTurn()
         }
 
         function checkVictory() {
@@ -874,7 +877,7 @@
             ctx.textBaseline = "bottom"
 
             ctx.fillStyle ="black"
-            ctx.font = "20px Times New Roman"
+            ctx.font = "16px Times New Roman"
             if (player == 1) {
                 ctx.fillText("Player 1", x+75, 400)
             } else if (player == 2) {
