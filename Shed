@@ -126,8 +126,7 @@
             draw();         
             sortHand();              
             renderCards();
-            //ctx.drawImage(document.getElementById("redBack"), 0, 0, 80, 120);
-        }           
+        }               
 
         function createDeck(deck) {
             // Iterates through suits and values to create cards
@@ -159,7 +158,6 @@
                 deck[positionA] = deck[positionB]
                 deck[positionB] = mid
             }
-            //return deck
         }
 
         function deal() {
@@ -487,11 +485,11 @@
             draw();
             sortHand();
             if (msg1 != "") {
-               drawMessage(msg1,"left"); 
+               drawMessage(msg1,"left",1); 
             }
             if (msg2 != "") {
-               drawMessage(msg2,"right"); 
-            }
+               drawMessage(msg2,"right",2); 
+            }           
             renderCards();
             checkVictory();
         }                   
@@ -650,12 +648,34 @@
             ctx.fillText("Play Again?", 400, 460)
         }
 
-        function transferToStack() {
+        function transferToStack(x) {
             // The transfers selected cards to stack
             for (let i = 0; i<selected.length;i++) {
                 let mid = selected[i]
                 stack.push(mid)
             }
+
+            let msgString = ""
+            switch(selected.length) {
+                case 1:
+                    msgString += "one " + (selected[0].Value).toString() + "."
+                    break;
+                case 2:
+                    msgString += "two " + (selected[0].Value).toString() + "s."
+                    break;
+                case 3:
+                    msgString += "three " + (selected[0].Value).toString() + "s."
+                    break;
+                case 4:
+                    msgString += "four " + (selected[0].Value).toString() + "s."
+                    break;
+            }
+            if (x == 1) {
+                msg1 = msgString
+            } else if (x == 2) [
+                msg2 = msgString
+            ]
+
             if (stack.at(-1).Value == 10) {
                 burn(x)      
             }  
@@ -699,39 +719,13 @@
         function playCards(x) {
             if (stack.length > 0) {
                 if (compareCards(selected[0],stack.at(-1))) {
-                    transferToStack()
+                    transferToStack(x)
                 } else {
                     forfeit(x)
                 }
             } else {
-                transferToStack()
+                transferToStack(x)
             }
-
-            let msgString = ""
-            if (x == 1) {
-                msgString += "Player 1 played "
-            } else if (x == 2) [
-                msgString += "Player 2 played "
-            ]
-            switch(selected.length) {
-                case 1:
-                    msgString += "one " + (selected[0].Value).toString() + "."
-                    break;
-                case 2:
-                    msgString += "two " + (selected[0].Value).toString() + "s."
-                    break;
-                case 3:
-                    msgString += "three " + (selected[0].Value).toString() + "s."
-                    break;
-                case 4:
-                    msgString += "four " + (selected[0].Value).toString() + "s."
-                    break;
-            }
-            if (x == 1) {
-                msg1 = msgString
-            } else if (x == 2) [
-                msg2 = msgString
-            ]
             cleanse()
             checkFourInRow(x)
             changeTurn()  
@@ -742,14 +736,14 @@
             if (x == 1) {
                 handcard1 = handcard1.concat(stack)
                 stack = []
-                msg1 = "Player 1 picked up the stack!"
+                msg1 = "picked up the stack!"
                 for (let i = 0; i<handcard1.length;i++) {
                     handcard1[i].Selected = false
                 }
             } else if (x == 2) {
                 handcard2 = handcard2.concat(stack)
                 stack = []
-                msg2 = "Player 2 picked up the stack!"
+                msg2 = "picked up the stack!"
                 for (let i = 0; i<handcard2.length;i++) {
                     handcard2[i].Selected = false
                 }
@@ -759,9 +753,9 @@
         function burn(x) {       
             stack = []
             if (x == 1) {
-                msg1 = "Player 1 burned the deck!"
+                msg1 = "burned the stack!"
             } else if (x == 2) [
-                msg2 = "Player 2 burned the deck!"
+                msg2 = "burned the stack!"
             ]
         }
 
@@ -823,7 +817,7 @@
                 if (handcard2.length > 0) {
                     let chosen = handcard2.findIndex((x) => compareCards(x,stack.at(-1)) == true)
                     if (chosen == -1) {
-                        forfeit(2)
+                        return forfeit(2)
                     } else if (chosen != -1) {
                         let chosenVal = handcard2.at(chosen).Value
                         for (let i = 0; i<handcard2.length; i++) {
@@ -836,7 +830,7 @@
                 } else if (upcard2.length > 0 && handcard2.length == 0) {
                     let chosen = upcard2.findIndex((x) => compareCards(x,stack.at(-1)) == true)
                     if (chosen == -1) {
-                        forfeit(2)
+                        return forfeit(2)
                     } else if (chosen != -1) {
                         let chosenVal = upcard2.at(chosen).Value
                         for (let i = 0; i<upcard2.length; i++) {
@@ -854,28 +848,40 @@
             playCards(2);
         }
 
-        function drawMessage(message,pos) {
+        function drawMessage(message,pos,player) {
             let x = pos == "left" ? 75 : 575
             let y = 350;
+
             ctx.fillStyle = "#FDFD96"
             ctx.roundRect(x, y, 150, 100, 5)                                               
             ctx.fill()
+
             ctx.strokeStyle = "black"
             ctx.lineWidth = 5
             ctx.lineJoin = "round"
             ctx.strokeRect(x, y, 150, 100)
-            ctx.beginPath();
-            ctx.moveTo(x,400);
-            ctx.lineTo(x+150,400);
-            ctx.closePath();
-            ctx.textBaseline = "middle"
+
             ctx.beginPath();
             ctx.moveTo(x+75,350);
             ctx.lineTo(x+75,450);
             ctx.closePath();
             ctx.textAlign = "center"
+
+            ctx.beginPath();
+            ctx.moveTo(x,400);
+            ctx.lineTo(x+150,400);
+            ctx.closePath();
+            ctx.textBaseline = "bottom"
+
             ctx.fillStyle ="black"
-            ctx.font = "15px Times New Roman"
+            ctx.font = "20px Times New Roman"
+            if (player == 1) {
+                ctx.fillText("Player 1", x+75, 400)
+            } else if (player == 2) {
+                ctx.fillText("Player 2", x+75, 400)
+            }
+
+            ctx.textBaseline = "top"
             ctx.fillText(message, x+75, 400)  
         }
 
