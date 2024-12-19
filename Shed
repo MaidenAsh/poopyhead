@@ -127,7 +127,7 @@
             sortHand();              
             renderCards();
         }                      
-                
+
         function createDeck(deck) {
             // Iterates through suits and values to create cards
             for (let i = 0; i<suits.length; i++) {
@@ -188,7 +188,7 @@
             while (handcard2.length<3) {
                 handcard2.push(deck.pop())
             }
-        }
+        }   
 
         function formString(card) {
             // Uses a card's suit and value to form a string to facilitate calling an image via ID
@@ -420,7 +420,7 @@
                                     }
                             } 
                         }   
-                    }
+                    }   
                     // When the player is using downcards
                     if (handcard1.length == 0 && upcard1.length == 0 && downcard1.length>0) {
                         for (let i = 0; i<downcard1.length; i++) {
@@ -443,7 +443,6 @@
                         if (event.offsetX > 620 && event.offsetX < 740
                         && event.offsetY > 530 && event.offsetY < 610) {
                             playCards(1)
-                            botMove()
                         }   
                     }
                     // Forfeit button
@@ -482,16 +481,35 @@
                 }
             }
             clear();
-            draw();
-            sortHand();
             if (msg1 != "") {
                drawMessage(msg1,"left",1); 
             }
             if (msg2 != "") {
                drawMessage(msg2,"right",2); 
-            }           
+            }
+            draw();
+            sortHand();
+            ctx.fillText(p1,100,100)          
+            ctx.fillText(p2,700,100)
             renderCards();
             checkVictory();
+            while (p2 == true) {
+                setTimeout(botMove,2000)
+            }   
+            clear()
+            if (msg1 != "") {
+               drawMessage(msg1,"left",1); 
+            }
+            if (msg2 != "") {
+               drawMessage(msg2,"right",2); 
+            }
+            draw();
+            sortHand();
+            ctx.fillText(p1,100,100)          
+            ctx.fillText(p2,700,100)
+            renderCards();
+            checkVictory();
+
         }                   
 
         function sortHand() {
@@ -629,23 +647,30 @@
             ctx.fillStyle = "#ff2b2b"
             ctx.roundRect(340, 420, 120, 80, 5)                                               
             ctx.fill()
+
             ctx.strokeStyle = "black"
             ctx.lineWidth = 5
             ctx.lineJoin = "round"
             ctx.strokeRect(340, 420, 120, 80)
-            ctx.beginPath();
-            ctx.moveTo(340,460);
-            ctx.lineTo(460,460);
-            ctx.closePath();
-            ctx.textBaseline = "middle"
+
             ctx.beginPath();
             ctx.moveTo(400,420);
             ctx.lineTo(400,500);
             ctx.closePath();
             ctx.textAlign = "center"
+
+            ctx.beginPath();
+            ctx.moveTo(340,460);
+            ctx.lineTo(460,460);
+            ctx.closePath();
+            ctx.textBaseline = "bottom"
+
             ctx.fillStyle ="black"  
             ctx.font = "bold 30px Times New Roman"
-            ctx.fillText("Play Again?", 400, 460)
+            ctx.fillText("Play", 400, 460)
+
+            ctx.textBaseline = "top"
+            ctx.fillText("Again?", 400, 460)
         }
 
         function transferToStack(x) {
@@ -658,16 +683,16 @@
             let msgString = ""
             switch(selected.length) {
                 case 1:
-                    msgString += "one " + (selected[0].Value).toString() + "."
+                    msgString += "played one " + (selected[0].Value).toString() + "."
                     break;
                 case 2:
-                    msgString += "two " + (selected[0].Value).toString() + "s."
+                    msgString += "played two " + (selected[0].Value).toString() + "s."
                     break;
                 case 3:
-                    msgString += "three " + (selected[0].Value).toString() + "s."
+                    msgString += "played three " + (selected[0].Value).toString() + "s."
                     break;
                 case 4:
-                    msgString += "four " + (selected[0].Value).toString() + "s."
+                    msgString += "played four " + (selected[0].Value).toString() + "s."
                     break;
             }
             if (x == 1) {
@@ -768,7 +793,7 @@
                 replayable = true
                 clear()
                 ctx.font = "bold italics 100px Times New Roman"
-                ctx.fillText("You Win!", 400, 300)
+                ctx.fillText("You Win!", 400, 400)
                 drawReplayButton()
             }
 
