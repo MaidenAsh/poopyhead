@@ -493,23 +493,7 @@
             ctx.fillText(p2,700,100)
             renderCards();
             checkVictory();
-            while (p2 == true) {
-                setTimeout(botMove,2000)
-            }   
-            clear()
-            if (msg1 != "") {
-               drawMessage(msg1,"left",1); 
-            }
-            if (msg2 != "") {
-               drawMessage(msg2,"right",2); 
-            }
-            draw();
-            sortHand();
-            ctx.fillText(p1,100,100)          
-            ctx.fillText(p2,700,100)
-            renderCards();
-            checkVictory();
-
+            const myTimeout = setTimeout(botMove,3000)
         }                   
 
         function sortHand() {
@@ -819,61 +803,77 @@
         }
 
         function botMove() {
-            if (stack.length == 0) {
-                // Selects all cards with the same value as the lowest value card
-                if (handcard2.length > 0) {
-                    for (let i = 0; i<handcard2.length; i++) {
-                        if (handcard2[i].Value == handcard2[0].Value) {
-                            handcard2[i].Selected = true
-                            selected.push(handcard2[i])
-                        }
-                    }
-                } else if (upcard2.length > 0 && handcard2.length == 0) {
-                    for (let i = 0; i<upcard2.length; i++) {
-                        if (upcard2[i].Value == upcard2[0].Value) {
-                            upcard2[i].Selected = true
-                            selected.push(upcard2[i])
-                        }
-                    }
-                } else if (upcard2.length == 0 && handcard2.length == 0) {
-                    downcard2[0].Selected = true
-                    selected.push(downcard2[0])
-                }
-            } else if (stack.length > 0) {
-                // Searches for a valid card to play, forfeits if none found
-                // Plays all copies of the same value card if valid card available
-                if (handcard2.length > 0) {
-                    let chosen = handcard2.findIndex((x) => compareCards(x,stack.at(-1)) == true)
-                    if (chosen == -1) {
-                        return forfeit(2)
-                    } else if (chosen != -1) {
-                        let chosenVal = handcard2.at(chosen).Value
+            while (p2 == true) {
+                if (stack.length == 0) {
+                    // Selects all cards with the same value as the lowest value card
+                    if (handcard2.length > 0) {
                         for (let i = 0; i<handcard2.length; i++) {
-                            if (handcard2[i].Value == chosenVal) {
+                            if (handcard2[i].Value == handcard2[0].Value) {
                                 handcard2[i].Selected = true
                                 selected.push(handcard2[i])
                             }
                         }
-                    }
-                } else if (upcard2.length > 0 && handcard2.length == 0) {
-                    let chosen = upcard2.findIndex((x) => compareCards(x,stack.at(-1)) == true)
-                    if (chosen == -1) {
-                        return forfeit(2)
-                    } else if (chosen != -1) {
-                        let chosenVal = upcard2.at(chosen).Value
+                    } else if (upcard2.length > 0 && handcard2.length == 0) {
                         for (let i = 0; i<upcard2.length; i++) {
-                            if (upcard2[i].Value == chosenVal) {
+                            if (upcard2[i].Value == upcard2[0].Value) {
                                 upcard2[i].Selected = true
                                 selected.push(upcard2[i])
                             }
                         }
+                    } else if (upcard2.length == 0 && handcard2.length == 0) {
+                        downcard2[0].Selected = true
+                        selected.push(downcard2[0])
                     }
-                } else if (upcard2.length == 0 && handcard2.length == 0) {
-                    downcard2[0].Selected = true
-                    selected.push(downcard2[0])
+                } else if (stack.length > 0) {
+                    // Searches for a valid card to play, forfeits if none found
+                    // Plays all copies of the same value card if valid card available
+                    if (handcard2.length > 0) {
+                        let chosen = handcard2.findIndex((x) => compareCards(x,stack.at(-1)) == true)
+                        if (chosen == -1) {
+                            return forfeit(2)
+                        } else if (chosen != -1) {
+                            let chosenVal = handcard2.at(chosen).Value
+                            for (let i = 0; i<handcard2.length; i++) {
+                                if (handcard2[i].Value == chosenVal) {
+                                    handcard2[i].Selected = true
+                                    selected.push(handcard2[i])
+                                }
+                            }
+                        }
+                    } else if (upcard2.length > 0 && handcard2.length == 0) {
+                        let chosen = upcard2.findIndex((x) => compareCards(x,stack.at(-1)) == true)
+                        if (chosen == -1) {
+                            return forfeit(2)
+                        } else if (chosen != -1) {
+                            let chosenVal = upcard2.at(chosen).Value
+                            for (let i = 0; i<upcard2.length; i++) {
+                                if (upcard2[i].Value == chosenVal) {
+                                    upcard2[i].Selected = true
+                                    selected.push(upcard2[i])
+                                }
+                            }
+                        }
+                    } else if (upcard2.length == 0 && handcard2.length == 0) {
+                        downcard2[0].Selected = true
+                        selected.push(downcard2[0])
+                    }
                 }
+                playCards(2);
             }
-            playCards(2);
+            clear() 
+            if (msg1 != "") {
+                drawMessage(msg1,"left",1); 
+            }
+            if (msg2 != "") {
+                drawMessage(msg2,"right",2); 
+            }   
+            draw();
+            sortHand(); 
+            ctx.fillText(p1,100,100)          
+            ctx.fillText(p2,700,100)
+            renderCards();  
+            checkVictory();        
+            clearTimeout(myTimeout)
         }
 
         function drawMessage(message,pos,player) {
