@@ -269,17 +269,13 @@
                 let interval = 80 + gap
                 let initial = 200 + gap     
                 let x = i*interval + initial    
-                let s = formString(handcard2[i])
-                ctx.drawImage(document.getElementById(s), x, 0, 80, 120)
+                //let s = formString(handcard2[i])
+                ctx.drawImage(document.getElementById("blueBack"), x, 0, 80, 120)
             }
 
             for (let i = 0; i<deck.length; i++) {
                 let y = 340 - i/2;                                                            
                 ctx.drawImage(document.getElementById("redBack"), 300, y, 80, 120);
-                //Draws cards in deck side by side for testing purposes
-                //let y = i%6 * 120
-                //let x = Math.floor(i/6) * 20
-                //ctx.drawImage(document.getElementById("redBack"), x, y, 80, 120);
             }
                         
             for (let i = 0; i<stack.length; i++) { 
@@ -761,6 +757,18 @@
                 }
             }   
             changeTurn()
+            clear() 
+            if (msg1 != "") {
+                drawMessage(msg1,"left",1); 
+            }
+            if (msg2 != "") {
+                drawMessage(msg2,"right",2); 
+            }   
+            draw();
+            sortHand(); 
+            ctx.fillText(p1,100,100)          
+            ctx.fillText(p2,700,100)
+            renderCards();  
         }                   
 
         function burn(x) {       
@@ -876,7 +884,7 @@
             renderCards();  
             checkVictory();        
             clearTimeout(myTimeout)
-        }
+        }   
 
         function drawMessage(message,pos,player) {
             let x = pos == "left" ? 75 : 575
