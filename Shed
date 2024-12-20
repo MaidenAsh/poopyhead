@@ -87,13 +87,13 @@
         <img id="redBack" src="images/Back Red.png";/>
         <img id="blueBack" src="images/Back Blue.png";/>
 
-        <audio id="placeCard"><source src="placeCard.mp3" type="audio/mpeg"></audio>
-        <audio id="bgMusic"></audio>
-        <audio id="burnSFX"></audio>
-        <audio id="forfeitSFX"></audio>
-        <audio id="victory"></audio>
-        <audio id="defeat"></audio>
-    </div>
+        <audio id="placeCard"><source src="audio/placeCard.mp3" type="audio/mpeg"></audio>
+        <audio id="bgMusic" ><source src ="audio/Jazz BGM.mp3" ></audio>
+        <audio id="burnSFX"><source src="audio/burnStack.mp3"></audio>
+        <audio id="forfeitSFX"><source src="audio/forfeit.mp3"></audio>
+        <audio id="victory"><source src="audio/victory.mp3"></audio>
+        <audio id="defeat"><source src="audio/defeat.mp3"></audio> 
+    </div>  
     <script>
         const canvas = document.getElementById('shedCanvas');
         const ctx = canvas.getContext('2d');
@@ -118,9 +118,9 @@
         let handcard2 = [];
         let selected = []; // List of selected cards
         let stack = []; // Stack of cards in center
-        let msg1 = "";
+        let msg1 = "";  
         let msg2 = "";
-        
+
         canvas.addEventListener("click",selectCards);   
 
         function initGame() {
@@ -131,9 +131,15 @@
             values.push("Joker"); // Facilitates sorting cards in hand
             deal();                   
             draw();         
-            sortHand();              
-            renderCards();
-        }                      
+            sortHand();                 
+            renderCards();      
+            document.getElementById("bgMusic").volume = 0.2
+            document.getElementById("bgMusic").loop = true
+            document.getElementById("placeCard").playbackRate = 3.0  
+            document.getElementById("burnSFX").playbackRate = 1.25
+            document.getElementById("forfeitSFX").playbackRate = 2.0    
+            document.getElementById("forfeitSFX").volume = 0.75
+        }                                                                              
 
         function createDeck(deck) {
             // Iterates through suits and values to create cards
@@ -324,6 +330,7 @@
 
         function selectCards() {  
             // Handles all clicking, key function for the game loop
+            document.getElementById("bgMusic").play() 
             if (gameRunning == true) {
                 // Initial swap phase
                 if (swapping == true && selected.length<=2) {
@@ -498,9 +505,9 @@
             checkVictory();
             if (p2 == true && gameRunning == true) {
                 const myTimeout = setTimeout(botMove,3000)
-            }
+            }  
         }                   
-                
+
         function sortHand() {
             // Sorts hands via values array
             handcard1.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
@@ -667,8 +674,9 @@
             for (let i = 0; i<selected.length;i++) {
                 let mid = selected[i]
                 stack.push(mid)
-                document.getElementById("placeCard").play()
-            }
+            }               
+
+            document.getElementById("placeCard").play()
 
             let msgString = ""
             switch(selected.length) {
@@ -776,6 +784,7 @@
             sortHand(); 
             ctx.fillText(p1,100,100)          
             ctx.fillText(p2,700,100)
+            document.getElementById("forfeitSFX").play()
             renderCards();  
         }                   
 
@@ -786,6 +795,7 @@
             } else if (x == 2) [
                 msg2 = "burned the stack!"
             ]
+            document.getElementById("burnSFX").play()
             changeTurn()
         }
 
@@ -797,6 +807,8 @@
                 ctx.font = "bold italics 100px Times New Roman"
                 ctx.fillText("You Win!", 400, 400)
                 drawReplayButton()
+                document.getElementById("bgMusic").load()
+                document.getElementById("victory").play()
             }
 
             if (downcard2.length == 0 && upcard2.length == 0 && handcard2.length == 0) {
@@ -806,6 +818,8 @@
                 ctx.font = "bold italics 100px Times New Roman"
                 ctx.fillText("You Lose!", 400, 400)
                 drawReplayButton()
+                document.getElementById("bgMusic").load()
+                document.getElementById("defeat").play()
             }
         }   
 
