@@ -374,7 +374,7 @@
                     }
                 }   
                 // Main game phase
-                if (swapping == false) {
+                if (swapping == false && p1 == true) {
                     // When handcards are present
                     if (handcard1.length>0) {
                         for (let i = 0; i<handcard1.length; i++) {
@@ -493,7 +493,9 @@
             ctx.fillText(p2,700,100)
             renderCards();
             checkVictory();
-            const myTimeout = setTimeout(botMove,3000)
+            if (p2 == true) {
+                const myTimeout = setTimeout(botMove,3000)
+            }
         }                   
 
         function sortHand() {
@@ -775,7 +777,7 @@
             if (downcard1.length == 0 && upcard1.length == 0 && handcard1.length == 0) {
                 gameRunning = false
                 replayable = true
-                clear()
+                clear()             
                 ctx.font = "bold italics 100px Times New Roman"
                 ctx.fillText("You Win!", 400, 400)
                 drawReplayButton()
