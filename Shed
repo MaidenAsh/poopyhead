@@ -86,6 +86,13 @@
 
         <img id="redBack" src="images/Back Red.png";/>
         <img id="blueBack" src="images/Back Blue.png";/>
+
+        <audio id="placeCard"><source src="placeCard.mp3" type="audio/mpeg"></audio>
+        <audio id="bgMusic"></audio>
+        <audio id="burnSFX"></audio>
+        <audio id="forfeitSFX"></audio>
+        <audio id="victory"></audio>
+        <audio id="defeat"></audio>
     </div>
     <script>
         const canvas = document.getElementById('shedCanvas');
@@ -489,11 +496,11 @@
             ctx.fillText(p2,700,100)
             renderCards();
             checkVictory();
-            if (p2 == true) {
+            if (p2 == true && gameRunning == true) {
                 const myTimeout = setTimeout(botMove,3000)
             }
         }                   
-
+                
         function sortHand() {
             // Sorts hands via values array
             handcard1.sort((a,b) => values.findIndex((x) => x == a.Value) - values.findIndex((x) => x == b.Value))
@@ -660,6 +667,7 @@
             for (let i = 0; i<selected.length;i++) {
                 let mid = selected[i]
                 stack.push(mid)
+                document.getElementById("placeCard").play()
             }
 
             let msgString = ""
