@@ -20,7 +20,7 @@
             background-size: 800px 800px;
         }
     </style>
-</head>
+</head> 
 <body onload="initGame()">
     <canvas id="shedCanvas" width="800" height="800"></canvas>
     <!--Every card image is inside this div-->
@@ -194,11 +194,11 @@
             if (deck.length == 0) {
                 return
             }
-            while (handcard1.length<3) {
+            while (handcard1.length<3 && deck.length != 0) {
                 handcard1.push(deck.pop())
             }                                   
 
-            while (handcard2.length<3) {
+            while (handcard2.length<3 && deck.length != 0) {
                 handcard2.push(deck.pop())
             }
         }       
@@ -211,6 +211,7 @@
                 
         function renderCards() {
             // Draws the cards and buttons onto the canvas
+            // Player's downcards
             for (let i = 0; i<downcard1.length; i++) {
                 let x = i*120 + 240
                 downcard1[i].x1 = x
@@ -225,12 +226,12 @@
                     ctx.strokeRect(downcard1[i].x1+2, downcard1[i].y1+2, 76, 115)
                 }
             }     
-                
+            // Bot's downcards
             for (let i = 0; i<downcard2.length; i++) {
                 let x = i*120 + 240
                 ctx.drawImage(document.getElementById("blueBack"), x, 170, 80, 120)
             }       
-
+            // Player's upcards
             for (let i = 0; i<upcard1.length; i++) {
                 let s = formString(upcard1[i])
                 let x = i*120 + 240
@@ -246,13 +247,13 @@
                     ctx.strokeRect(upcard1[i].x1+2, upcard1[i].y1+2, 76, 115)
                 }
             }    
-
+            // Bot's upcards
             for (let i = 0; i<upcard2.length; i++) {
                 let s = formString(upcard2[i])
                 let x = i*120 + 240
                 ctx.drawImage(document.getElementById(s), x, 165, 80, 120)
             }           
-
+            // Player's handcards
             for (let i = 0; i<handcard1.length; i++) {
                 let s = formString(handcard1[i])
                 let gap = ((400-(80*handcard1.length))/(handcard1.length + 1))
@@ -276,7 +277,7 @@
                     ctx.strokeRect(handcard1[i].x1+2, handcard1[i].y1+2, 76, 115)
                 }
             }           
-
+            // Bot's handcards
             for (let i = 0; i<handcard2.length; i++) { 
                 let gap = ((400-(80*handcard2.length))/(handcard2.length + 1))  
                 let interval = 80 + gap
@@ -285,18 +286,18 @@
                 //let s = formString(handcard2[i])
                 ctx.drawImage(document.getElementById("blueBack"), x, 0, 80, 120)
             }
-
+            // Deck
             for (let i = 0; i<deck.length; i++) {
                 let y = 340 - i/2;                                                            
                 ctx.drawImage(document.getElementById("redBack"), 300, y, 80, 120);
             }
-                        
+            // Stack
             for (let i = 0; i<stack.length; i++) { 
                 let s = formString(stack[i])
                 let y = 340 - i/4;
                 ctx.drawImage(document.getElementById(s), 420, y, 80, 120);
             }
-
+            // Buttons
             if (gameRunning == true && swapping == true) {
                 readyable = true
                 drawReadyButton()
@@ -670,7 +671,7 @@
         }
 
         function transferToStack(x) {
-            // The transfers selected cards to stack
+            // Transfers selected cards to stack
             for (let i = 0; i<selected.length;i++) {
                 let mid = selected[i]
                 stack.push(mid)
@@ -702,16 +703,16 @@
             changeTurn()
 
             if (stack.at(-1).Value == 10) {
-                burn(x)      
+                burn(x)
             }  
-        }
+        }                   
 
         function compareCards(a,b) {
             // Compares the selected card(s), a, with the card in the stack, b
             if (b.Value == "Joker") {
-                if (a.Magical == true) {
+                if (a.Magical == true && a.Value != "Joker") {
                     return false    
-                } else if (a.Magical == false) {
+                } else if (a.Magical == false || a.Value == "Joker") {
                     if (stack.findLastIndex((x) => x.Value != "Joker") != -1) {
                         return compareCards(a,stack.at(stack.findLastIndex((x) => x.Value != "Joker")))
                     } else if (stack.findLastIndex((x) => x.Value != "Joker") == -1) {
@@ -797,7 +798,7 @@
             ]
             document.getElementById("burnSFX").play()
             changeTurn()
-        }
+        }           
 
         function checkVictory() {
             if (downcard1.length == 0 && upcard1.length == 0 && handcard1.length == 0) {
@@ -958,4 +959,4 @@
 
     </script>
 </body>
-</html>
+</html> 

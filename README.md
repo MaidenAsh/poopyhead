@@ -28,7 +28,7 @@ Some cards are magical and have special features. Magical cards can be placed on
 
 10s are magical. They burn the Stack. 
 
-Jokers are magical. They act like an 8, but additionally they prevent magical cards from being placed on top of them, including other Jokers.
+Jokers are magical. They act like an 8, but additionally they prevent magical cards from being placed on top of them, except for other Jokers.
 
 9s are non-magical, but reverse the turn order. 9s cannot be played in succession, but multiple 9s can be played in one hand. Since this version of the game only handles 2 players, the human and the bot, the 9s are irrelevant here.
 
