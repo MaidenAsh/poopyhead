@@ -131,7 +131,7 @@
         document.getElementById("burnSFX").playbackRate = 1.25
         document.getElementById("forfeitSFX").playbackRate = 2.0    
         document.getElementById("forfeitSFX").volume = 0.75
-        
+
         function initGame() {
             gameRunning = true;     
             swapping = true;
@@ -284,8 +284,9 @@
                 let interval = 80 + gap
                 let initial = 200 + gap     
                 let x = i*interval + initial    
-                ctx.drawImage(document.getElementById("blueBack"), x, 0, 80, 120)
-            }
+                let s = formString(handcard2[i])
+                ctx.drawImage(document.getElementById(s), x, 0, 80, 120)
+            }   
             // Deck
             for (let i = 0; i<deck.length; i++) {
                 let y = 340 - i*0.75;                                                            
@@ -706,8 +707,8 @@
                     }
                 }                       
             } else if (b.Value == "8") {
-                let index = stack.findLastIndex((x) => x.Value != "8")
-                if (index != -1) {  
+                let index = stack.findLastIndex((x) => x.Value != "8" && x.Value != "Joker")
+                if (index != -1) {      
                     return compareCards(a,stack.at(index))
                 } else if (index == -1) {
                     return true 
@@ -727,7 +728,7 @@
                 }
             }
         }           
-
+            
         function playCards(x) {
             if (stack.length > 0) {
                 if (compareCards(selected[0],stack.at(-1))) {
