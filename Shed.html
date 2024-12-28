@@ -775,8 +775,14 @@
             ]
             document.getElementById("burnSFX").play()
             changeTurn()
-        }           
-
+            if (x == 2) {
+                if (p2 == true && gameRunning == true) {
+                    const myTimeout = setTimeout(botMove,2000)
+                    const burnTO = setTimeout(checkBurn,2500,2)
+                }
+            }
+        }                                       
+            
         function checkVictory() {
             if (downcard1.length == 0 && upcard1.length == 0 && handcard1.length == 0) {
                 gameRunning = false
@@ -818,18 +824,7 @@
                     burn(x)
                 }
             }
-
-            clear();
-            if (msg1 != "") {
-               drawMessage(msg1,"left",1); 
-            }
-            if (msg2 != "") {
-               drawMessage(msg2,"right",2); 
-            }
-            draw();
-            sortHand();
-            renderCards();
-
+            routine()
             clearTimeout(burnTO)
         }       
 
