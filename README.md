@@ -30,10 +30,10 @@ Some cards are magical and have special features. Magical cards can be placed on
 Jokers are magical. They act like an 8, but additionally they prevent magical cards from being placed on top of them, except for other Jokers.
 
 Credits:
-This article was helpful in getting this project started: https://www.thatsoftwaredude.com/content/6196/coding-a-card-deck-in-javascript 
-Background Music: https://pixabay.com/music/smooth-jazz-jazz-funk-groove-instrumental-222618/
-Placing Card SFX: https://pixabay.com/sound-effects/flipcard-91468/
-Burn SFX: https://pixabay.com/sound-effects/electronic-element-burn-spark-1-248606/
-Forfeit SFX: https://pixabay.com/sound-effects/brass-fail-11-a-207140/
-Victory SFX: https://pixabay.com/sound-effects/level-win-6416/
-Defeat SFX: https://pixabay.com/sound-effects/game-over-39-199830/
+- This article was helpful in getting this project started: https://www.thatsoftwaredude.com/content/6196/coding-a-card-deck-in-javascript 
+- Background Music: https://pixabay.com/music/smooth-jazz-jazz-funk-groove-instrumental-222618/
+- Placing Card SFX: https://pixabay.com/sound-effects/flipcard-91468/
+- Burn SFX: https://pixabay.com/sound-effects/electronic-element-burn-spark-1-248606/
+- Forfeit SFX: https://pixabay.com/sound-effects/brass-fail-11-a-207140/
+- Victory SFX: https://pixabay.com/sound-effects/level-win-6416/
+- Defeat SFX: https://pixabay.com/sound-effects/game-over-39-199830/
