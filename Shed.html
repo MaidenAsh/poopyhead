@@ -195,7 +195,7 @@
 
         function draw() {
             // Draws until 3 cards in hand, as long as there's cards in the deck
-            while (handcard1.length<3 && deck.length != 0) {
+            while (handcard1.length<35 && deck.length != 0) {
                 handcard1.push(deck.pop())
             }                                   
             while (handcard2.length<3 && deck.length != 0) {
@@ -782,9 +782,6 @@
                                         
         function checkVictory() {
             if (downcard1.length == 0 && upcard1.length == 0 && handcard1.length == 0) {
-                clearTimeout(vicTO)
-                clearTimeout(burnTO)
-                clearTimeout(myTimeout)
                 p1 = false
                 p2 = false
                 gameRunning = false
@@ -800,9 +797,6 @@
             }
 
             if (downcard2.length == 0 && upcard2.length == 0 && handcard2.length == 0) {
-                clearTimeout(vicTO)
-                clearTimeout(burnTO)
-                clearTimeout(myTimeout)
                 p1 = false
                 p2 = false
                 gameRunning = false
@@ -820,7 +814,7 @@
             if (p2 == true && gameRunning == true) {
                 const myTimeout = setTimeout(botMove,1100)
                 const burnTO = setTimeout(checkBurn,2000,2)
-            }
+            }                   
 
             clearTimeout(vicTO)
         }   
