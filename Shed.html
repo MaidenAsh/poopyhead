@@ -23,7 +23,7 @@
 </head> 
 <body onload="initGame()">
     <canvas id="shedCanvas" width="800" height="800"></canvas>
-    <!--Every card image is inside this div-->
+    <!--Every card image is inside this div element-->
     <div style="display:none;">
         <img id="spades2" src="images/spades2.png";/>
         <img id="spades3" src="images/spades3.png";/>
@@ -123,15 +123,16 @@
         let msg1 = "";  
         let msg2 = "";
 
-        canvas.addEventListener("click",selectCards);   
         // Adjusting volume and speed of sound effects     
-        document.getElementById("bgMusic").volume = 0.15
-        document.getElementById("bgMusic").loop = true
-        document.getElementById("placeCard").playbackRate = 3.0  
-        document.getElementById("burnSFX").playbackRate = 1.25
-        document.getElementById("forfeitSFX").playbackRate = 2.0    
-        document.getElementById("forfeitSFX").volume = 0.75
+        document.getElementById("bgMusic").volume = 0.15;
+        document.getElementById("bgMusic").loop = true;
+        document.getElementById("placeCard").playbackRate = 3.0;
+        document.getElementById("burnSFX").playbackRate = 1.25;
+        document.getElementById("forfeitSFX").playbackRate = 2.0;    
+        document.getElementById("forfeitSFX").volume = 0.75;
 
+        canvas.addEventListener("click",selectCards);   
+        
         function initGame() {
             gameRunning = true;     
             swapping = true;
@@ -142,7 +143,6 @@
             draw();         
             sortHand();                 
             renderCards(); 
-            
         }                                                                              
 
         function createDeck(deck) {
@@ -178,7 +178,7 @@
         }
 
         function deal() {
-            // 3 downcards and 3 upcards to each player
+            // Deals 3 downcards and 3 upcards to each player
             while (downcard1.length<3) {
                 downcard1.push(deck.pop())
             }
@@ -194,7 +194,7 @@
         }
 
         function draw() {
-            // Draws until 3 cards in hand, as long as there's cards in the deck
+            // Draws until 3 cards in hand, as long as there's cards left in the deck
             while (handcard1.length<3 && deck.length != 0) {
                 handcard1.push(deck.pop())
             }                                   
@@ -467,14 +467,15 @@
                     }
                     routine()
                     if (p2 == true || downcard1.length == 0) {
-                        const vicTO = setTimeout(checkVictory, 1000)  
+                        const vicTO = setTimeout(checkVictory, 1000) // checkVictory also contains the cue for the bot to move  
                     }
                 }   
             } else if (gameRunning == false) {
+                // After the player wins or loses
                 if (replayable == true) {
                     if (event.offsetX > 340 && event.offsetX < 460
                     && event.offsetY > 420 && event.offsetY < 500) {
-                        location.reload()
+                        location.reload() // Reloads the document
                     }
                 }   
             }
@@ -492,7 +493,7 @@
         }
 
         function swapCards() {
-            // Swaps cards during swap phase
+            // Swaps between handcards and upcards during swap phase
             if (selected.length == 2) {
                 let hand = selected.filter((x) => handcard1.includes(x)).pop()
                 let up = selected.filter((x) => upcard1.includes(x)).pop()
@@ -506,7 +507,7 @@
         }
 
         function cleanse() {
-            // Removes selected cards from player's cards and empties selected array
+            // Removes selected cards from player's cards and empties 'selected' array
             handcard1 = handcard1.filter((card) => card.Selected != true)
             upcard1 = upcard1.filter((card) => card.Selected != true)
             downcard1 = downcard1.filter((card) => card.Selected != true)
@@ -648,9 +649,8 @@
                 let mid = selected[i]
                 stack.push(mid)
             }   
-
             document.getElementById("placeCard").play()
-
+            // Creates message to display when cards are played
             let msgString = ""
             switch(selected.length) {
                 case 1:
@@ -668,10 +668,9 @@
             }
             if (x == 1) {
                 msg1 = msgString
-            } else if (x == 2) [
+            } else if (x == 2) {
                 msg2 = msgString
-            ]
-
+            }
             cleanse()        
         }                                  
 
@@ -711,6 +710,7 @@
         }           
             
         function playCards(x) {
+            // Determines whether the cards selected are valid to play and forfeits if not
             if (stack.length > 0) {
                 if (compareCards(selected[0],stack.at(-1))) {
                     transferToStack(x)
@@ -747,7 +747,8 @@
             document.getElementById("forfeitSFX").play()
         }                   
 
-        function burn(x) {       
+        function burn(x) {      
+            // Burns the stack and displays relevant message
             stack = []
             if (x == 1) {
                 msg1 = "burned the stack!"
@@ -761,6 +762,7 @@
         }                                       
                                         
         function checkVictory() {
+            // Checks if the player won
             if (downcard1.length == 0 && upcard1.length == 0 && handcard1.length == 0) {
                 p1 = false
                 p2 = false
@@ -775,7 +777,7 @@
                 document.getElementById("bgMusic").load()
                 document.getElementById("victory").play()
             }
-
+            // Checks if the bot won
             if (downcard2.length == 0 && upcard2.length == 0 && handcard2.length == 0) {
                 p1 = false
                 p2 = false
@@ -790,7 +792,7 @@
                 document.getElementById("bgMusic").load()
                 document.getElementById("defeat").play()
             } 
-            
+            // If neither have won yet, then the bot moves (as long as it is its turn)
             if (p2 == true && gameRunning == true) {
                 const myTimeout = setTimeout(botMove,1100)
                 const burnTO = setTimeout(checkBurn,2000,2)
@@ -880,6 +882,7 @@
         }   
 
         function drawMessage(message,pos,player) {
+            // Draws message on the left or right for the player and bot respectively
             let x = pos == "left" ? 75 : 575
             let y = 350;
 
@@ -928,6 +931,7 @@
         }
 
         function routine() {
+            // Series of functions that are used after each hand is played
             clear();
             if (msg1 != "") {
                drawMessage(msg1,"left",1); 
