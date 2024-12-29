@@ -466,7 +466,9 @@
                         }
                     }
                     routine()
-                    const vicTO = setTimeout(checkVictory, 2000)  
+                    if (p2 == true || downcard1.length == 0) {
+                        const vicTO = setTimeout(checkVictory, 1000)  
+                    }
                 }
             } else if (gameRunning == false) {
                 if (replayable == true) {
@@ -771,8 +773,8 @@
                 msg1 = "burned the stack!"
             } else if (x == 2) {
                 msg2 = "burned the stack!"
-                const myTimeout = setTimeout(botMove,1500)
-                const burnTO = setTimeout(checkBurn,2400,2)
+                const myTimeout = setTimeout(botMove,1000)
+                const burnTO = setTimeout(checkBurn,2000,2)
             }
             document.getElementById("burnSFX").play()
             changeTurn() // Cancels out the turn change inside playCards
@@ -780,6 +782,9 @@
                                         
         function checkVictory() {
             if (downcard1.length == 0 && upcard1.length == 0 && handcard1.length == 0) {
+                clearTimeout(vicTO)
+                clearTimeout(burnTO)
+                clearTimeout(myTimeout)
                 p1 = false
                 p2 = false
                 gameRunning = false
@@ -795,6 +800,9 @@
             }
 
             if (downcard2.length == 0 && upcard2.length == 0 && handcard2.length == 0) {
+                clearTimeout(vicTO)
+                clearTimeout(burnTO)
+                clearTimeout(myTimeout)
                 p1 = false
                 p2 = false
                 gameRunning = false
@@ -810,8 +818,8 @@
             } 
             
             if (p2 == true && gameRunning == true) {
-                const myTimeout = setTimeout(botMove,1500)
-                const burnTO = setTimeout(checkBurn,2400,2)
+                const myTimeout = setTimeout(botMove,1100)
+                const burnTO = setTimeout(checkBurn,2000,2)
             }
 
             clearTimeout(vicTO)
