@@ -466,6 +466,7 @@
                         }
                     }
                     routine()
+                    //const vicTO = setTimeout(checkVictory, 2000)  
                 }
             } else if (gameRunning == false) {
                 if (replayable == true) {
@@ -494,7 +495,7 @@
                     }
                 }   
             }
-            const vicTO = setTimeout(checkVictory, 1500)  
+            const vicTO = setTimeout(checkVictory, 2000)  
         }                   
 
         function sortHand() {
@@ -770,8 +771,8 @@
                 msg1 = "burned the stack!"
             } else if (x == 2) {
                 msg2 = "burned the stack!"
-                const myTimeout = setTimeout(botMove,2000)
-                const burnTO = setTimeout(checkBurn,2500,2)
+                const myTimeout = setTimeout(botMove,1500)
+                const burnTO = setTimeout(checkBurn,2400,2)
             }
             document.getElementById("burnSFX").play()
             changeTurn() // Cancels out the turn change inside playCards
@@ -809,8 +810,8 @@
             } 
             
             if (p2 == true && gameRunning == true) {
-                const myTimeout = setTimeout(botMove,2000)
-                const burnTO = setTimeout(checkBurn,2500,2)
+                const myTimeout = setTimeout(botMove,1500)
+                const burnTO = setTimeout(checkBurn,2400,2)
             }
 
             clearTimeout(vicTO)
@@ -891,7 +892,7 @@
                 }
                 playCards(2);
                 routine();  
-                const vicTO = setTimeout(checkVictory, 1500)  
+                const vicTO = setTimeout(checkVictory, 2000)  
             }    
             clearTimeout(myTimeout)
         }   
