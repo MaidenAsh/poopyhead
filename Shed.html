@@ -195,7 +195,7 @@
 
         function draw() {
             // Draws until 3 cards in hand, as long as there's cards in the deck
-            while (handcard1.length<35 && deck.length != 0) {
+            while (handcard1.length<3 && deck.length != 0) {
                 handcard1.push(deck.pop())
             }                                   
             while (handcard2.length<3 && deck.length != 0) {
@@ -284,8 +284,8 @@
                 let interval = 80 + gap
                 let initial = 200 + gap     
                 let x = i*interval + initial    
-                let s = formString(handcard2[i])
-                ctx.drawImage(document.getElementById(s), x, 0, 80, 120)
+                //let s = formString(handcard2[i])
+                ctx.drawImage(document.getElementById("blueBack"), x, 0, 80, 120)
             }   
             // Deck
             for (let i = 0; i<deck.length; i++) {
@@ -330,8 +330,8 @@
 
         function selectCards() {  
             // Handles all clicking, key function for the game loop
-            //document.getElementById("bgMusic").play() 
             if (gameRunning == true) {
+                document.getElementById("bgMusic").play() 
                 // Initial swap phase
                 if (swapping == true && selected.length<=2) {
                     for (let i = 0; i<upcard1.length; i++) {
@@ -469,35 +469,15 @@
                     if (p2 == true || downcard1.length == 0) {
                         const vicTO = setTimeout(checkVictory, 1000)  
                     }
-                }
+                }   
             } else if (gameRunning == false) {
                 if (replayable == true) {
                     if (event.offsetX > 340 && event.offsetX < 460
                     && event.offsetY > 420 && event.offsetY < 500) {
-                        clear()
-                        p1 = false;
-                        p2 = false;
-                        swappable = false;  // -able variables to enable buttons
-                        readyable = true;
-                        playable = false;
-                        forfeitable = false;
-                        replayable = false;
-                        deck = [];
-                        downcard1 = [];
-                        downcard2 = []; 
-                        upcard1 = [];
-                        upcard2 = [];
-                        handcard1 = [];
-                        handcard2 = [];
-                        selected = []; // List of selected cards
-                        stack = []; // Stack of cards in center
-                        msg1 = "";
-                        msg2 = "";
-                        initGame()
+                        location.reload()
                     }
                 }   
             }
-            //const vicTO = setTimeout(checkVictory, 2000)  
         }                   
 
         function sortHand() {
