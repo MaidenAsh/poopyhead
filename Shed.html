@@ -383,6 +383,7 @@
                             swapping = false
                         }   
                     }
+                    routine()
                 }          
                 // Main game phase
                 if (swapping == false && p1 == true) {
@@ -464,7 +465,8 @@
                             forfeit(1)
                         }
                     }
-                }      
+                    routine()
+                }
             } else if (gameRunning == false) {
                 if (replayable == true) {
                     if (event.offsetX > 340 && event.offsetX < 460
@@ -492,12 +494,7 @@
                     }
                 }   
             }
-            routine();
-            checkVictory();
-            if (p2 == true && gameRunning == true) {
-                const myTimeout = setTimeout(botMove,2000)
-                const burnTO = setTimeout(checkBurn,2500,2)
-            }
+            const vicTO = setTimeout(checkVictory, 1500)  
         }                   
 
         function sortHand() {
@@ -521,6 +518,7 @@
                 up.Selected = false
                 handcard1.push(up)
                 upcard1.push(hand)
+                document.getElementById("placeCard").play()
             }       
         }
 
@@ -736,7 +734,7 @@
                     changeTurn()    
                 } else {
                     transferToStack(x)
-                    forfeit(x)
+                    forfeit(x) // Turn changing included in forfeit
                 }
             } else {
                 transferToStack(x)
@@ -770,21 +768,19 @@
             stack = []
             if (x == 1) {
                 msg1 = "burned the stack!"
-            } else if (x == 2) [
+            } else if (x == 2) {
                 msg2 = "burned the stack!"
-            ]
-            document.getElementById("burnSFX").play()
-            changeTurn()
-            if (x == 2) {
-                if (p2 == true && gameRunning == true) {
-                    const myTimeout = setTimeout(botMove,2000)
-                    const burnTO = setTimeout(checkBurn,2500,2)
-                }
+                const myTimeout = setTimeout(botMove,2000)
+                const burnTO = setTimeout(checkBurn,2500,2)
             }
+            document.getElementById("burnSFX").play()
+            changeTurn() // Cancels out the turn change inside playCards
         }                                       
-            
+                                        
         function checkVictory() {
             if (downcard1.length == 0 && upcard1.length == 0 && handcard1.length == 0) {
+                p1 = false
+                p2 = false
                 gameRunning = false
                 replayable = true
                 clear() 
@@ -798,6 +794,8 @@
             }
 
             if (downcard2.length == 0 && upcard2.length == 0 && handcard2.length == 0) {
+                p1 = false
+                p2 = false
                 gameRunning = false
                 replayable = true
                 clear()     
@@ -808,7 +806,14 @@
                 drawReplayButton()
                 document.getElementById("bgMusic").load()
                 document.getElementById("defeat").play()
-            }   
+            } 
+            
+            if (p2 == true && gameRunning == true) {
+                const myTimeout = setTimeout(botMove,2000)
+                const burnTO = setTimeout(checkBurn,2500,2)
+            }
+
+            clearTimeout(vicTO)
         }   
 
         function checkBurn(x) {
@@ -885,9 +890,9 @@
                     }
                 }
                 playCards(2);
-            }
-            routine();
-            checkVictory();        
+                routine();  
+                const vicTO = setTimeout(checkVictory, 1500)  
+            }    
             clearTimeout(myTimeout)
         }   
 
