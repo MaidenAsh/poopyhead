@@ -328,14 +328,14 @@
             }   else {
                 forfeitable = false
             }
-
+            // Info screen + button
             if (showInfo == true) {
-                //const infoTO = setTimeout(drawInfo,100)      
+                //const infoTO = setTimeout(drawInfo,100)
                 drawInfo()
             } else if (showInfo == false) {
                 //const infoButtonTO = setTimeout(drawInfoButton,300)   
                 drawInfoButton()
-            }
+            }   
         }           
 
         function selectCards() {  
@@ -371,16 +371,16 @@
                                     handcard1[i].Selected = false
                                 }
                         } 
-                    }
+                    }   
                     // Swap button
-                    if (swappable == true) {
+                    if (swappable == true && showInfo == false) {
                         if (event.offsetX > 60 && event.offsetX < 180
                         && event.offsetY > 530 && event.offsetY < 610) {
                             swapCards()
                         }
                     }
                     // Ready button
-                    if (readyable == true) {
+                    if (readyable == true && showInfo == false) {
                         if (event.offsetX > 620 && event.offsetX < 740
                         && event.offsetY > 530 && event.offsetY < 610) {
                             for (let i = 0; i<upcard1.length;i++) {
@@ -473,7 +473,7 @@
                         }   
                     }
                     // Play button
-                    if (playable == true) {
+                    if (playable == true && showInfo == false) {
                         if (event.offsetX > 620 && event.offsetX < 740
                         && event.offsetY > 530 && event.offsetY < 610) {
                             playCards(1)
@@ -481,7 +481,7 @@
                         }   
                     }
                     // Forfeit button
-                    if (forfeitable == true) {
+                    if (forfeitable == true && showInfo == false) {
                         if (event.offsetX > 60 && event.offsetX < 180
                         && event.offsetY > 530 && event.offsetY < 610) {
                             forfeit(1)
@@ -978,26 +978,31 @@
         }
 
         function drawInfoButton() {
+            // Draws button that leads to info screen
             ctx.beginPath()
             ctx.arc(70,60,25,0,2*Math.PI)
             ctx.strokeStyle = "black"
-            ctx.stroke()        
+            ctx.stroke()
+            ctx.closePath()
 
-            ctx.textAlign = "center"
+            ctx.beginPath()
+            ctx.fillStyle = "black" 
+            ctx.textAlign = "center"    
             ctx.textBaseline = "middle"
             ctx.font = "bold 45px Times New Roman"
-            ctx.fillStyle = "black" 
             ctx.fillText("i",70,65)
-
-            //clearTimeout(infoButtonTO)
+            ctx.closePath()
         }   
 
         function drawInfo() {
+            // Shows instructions on how to play the game
             ctx.beginPath()
-            ctx.roundRect(50,50,700,700,15)
             ctx.fillStyle = "rgb(0 0 0/85%)"
+            ctx.roundRect(50,50,700,700,15)
             ctx.fill()
+            ctx.closePath()
 
+            ctx.beginPath()
             ctx.textAlign = "left"
             ctx.textBaseline = "bottom"
             ctx.fillStyle = "white"
@@ -1076,8 +1081,7 @@
             ctx.textBaseline = "middle"
             ctx.font = "bold 40px Verdana"
             ctx.fillText("X", 725, 90)  
-
-            //clearTimeout(infoTO)
+            ctx.closePath()
         }   
 
     </script>
