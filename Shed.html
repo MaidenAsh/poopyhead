@@ -109,7 +109,9 @@
         let readyable = true;
         let playable = false;
         let forfeitable = false;
+
         let replayable = false;
+        let showInfo = false
         // Arrays for the places the cards can be
         let deck = []; 
         let downcard1 = [];
@@ -326,7 +328,15 @@
             }   else {
                 forfeitable = false
             }
-        }          
+            // Info screen + button
+            if (showInfo == true) {
+                //const infoTO = setTimeout(drawInfo,100)
+                drawInfo()
+            } else if (showInfo == false) {
+                //const infoButtonTO = setTimeout(drawInfoButton,300)   
+                drawInfoButton()
+            }   
+        }           
 
         function selectCards() {  
             // Handles all clicking, key function for the game loop
@@ -361,16 +371,16 @@
                                     handcard1[i].Selected = false
                                 }
                         } 
-                    }
+                    }   
                     // Swap button
-                    if (swappable == true) {
+                    if (swappable == true && showInfo == false) {
                         if (event.offsetX > 60 && event.offsetX < 180
                         && event.offsetY > 530 && event.offsetY < 610) {
                             swapCards()
                         }
                     }
                     // Ready button
-                    if (readyable == true) {
+                    if (readyable == true && showInfo == false) {
                         if (event.offsetX > 620 && event.offsetX < 740
                         && event.offsetY > 530 && event.offsetY < 610) {
                             for (let i = 0; i<upcard1.length;i++) {
@@ -383,8 +393,20 @@
                             swapping = false
                         }   
                     }
-                    routine()
-                }          
+                    //Info button
+                    if (showInfo == false) {
+                        if (event.offsetX > 45 && event.offsetX < 95
+                        && event.offsetY > 35 && event.offsetY < 85) {
+                            showInfo = true
+                        }       
+                    } else if (showInfo == true) {
+                        if (event.offsetX > 685 && event.offsetX < 725
+                        && event.offsetY > 70 && event.offsetY < 110) {
+                            showInfo = false
+                        }   
+                    }   
+                    routine()   
+                }           
                 // Main game phase
                 if (swapping == false && p1 == true) {
                     // When handcards are present
@@ -451,7 +473,7 @@
                         }   
                     }
                     // Play button
-                    if (playable == true) {
+                    if (playable == true && showInfo == false) {
                         if (event.offsetX > 620 && event.offsetX < 740
                         && event.offsetY > 530 && event.offsetY < 610) {
                             playCards(1)
@@ -459,12 +481,23 @@
                         }   
                     }
                     // Forfeit button
-                    if (forfeitable == true) {
+                    if (forfeitable == true && showInfo == false) {
                         if (event.offsetX > 60 && event.offsetX < 180
                         && event.offsetY > 530 && event.offsetY < 610) {
                             forfeit(1)
                         }
                     }
+                    if (showInfo == false) {
+                        if (event.offsetX > 45 && event.offsetX < 95
+                        && event.offsetY > 35 && event.offsetY < 85) {
+                            showInfo = true
+                        }       
+                    } else if (showInfo == true) {
+                        if (event.offsetX > 685 && event.offsetX < 725
+                        && event.offsetY > 70 && event.offsetY < 110) {
+                            showInfo = false
+                        }   
+                    }  
                     routine()
                     if (p2 == true || downcard1.length == 0) {
                         const vicTO = setTimeout(checkVictory, 1000) // checkVictory also contains the cue for the bot to move  
@@ -943,6 +976,113 @@
             sortHand(); 
             renderCards();
         }
+
+        function drawInfoButton() {
+            // Draws button that leads to info screen
+            ctx.beginPath()
+            ctx.arc(70,60,25,0,2*Math.PI)
+            ctx.strokeStyle = "black"
+            ctx.stroke()
+            ctx.closePath()
+
+            ctx.beginPath()
+            ctx.fillStyle = "black" 
+            ctx.textAlign = "center"    
+            ctx.textBaseline = "middle"
+            ctx.font = "bold 45px Times New Roman"
+            ctx.fillText("i",70,65)
+            ctx.closePath()
+        }   
+
+        function drawInfo() {
+            // Shows instructions on how to play the game
+            ctx.beginPath()
+            ctx.fillStyle = "rgb(0 0 0/85%)"
+            ctx.roundRect(50,50,700,700,15)
+            ctx.fill()
+            ctx.closePath()
+
+            ctx.beginPath()
+            ctx.textAlign = "left"
+            ctx.textBaseline = "bottom"
+            ctx.fillStyle = "white"
+            ctx.font = "18px Times New Roman"
+            ctx.fillText("The objective of the game is to lose all your cards as quickly as possible.",
+                70, 100
+            )   
+            ctx.fillText("The first to lose all their cards wins.",
+                70, 120
+            )
+            ctx.fillText("Before you press Ready, you have the opportunity to swap upcards with handcards",
+                70, 155
+            )
+            ctx.fillText("to create a stronger set of upcards for later in the game.",
+                70, 175
+            )   
+            ctx.fillText("Each player places a card from their handcards on their turn in the middle (the Stack),",
+                70, 210
+            )
+            ctx.fillText("and replace those cards by drawing from the deck so that they always have at least 3",
+                70, 230
+            )
+            ctx.fillText("handcards. You must play a card with a value equal to or higher than the card in the Stack.",
+                70, 250
+            )
+            ctx.fillText("If a player fails to play a valid card, they add all the cards in the Stack to their hand",
+                70, 285
+            )
+            ctx.fillText("and lose their turn.",
+                70, 305
+            )
+            ctx.fillText("If 4 cards of the same value are next to each other in the Stack, then the Stack is burned.",
+                70, 340 
+            )
+            ctx.fillText("When the Stack is burned, the cards in the Stack are removed from play.",
+                70, 360
+            )
+            ctx.fillText("Whenever the Stack is burned by any means, the player that burned the Stack plays again.",
+                70, 395
+            )
+            ctx.fillText("Once the deck is exhausted, players no longer have to replace handcards that they play.",
+                70, 430
+            )       
+            ctx.fillText("A player can only use their upcards once they've exhausted their handcards, and can only use",
+                70, 450
+            )
+            ctx.fillText("their downcards once they are out of upcards.",
+                70, 470 
+            )   
+            ctx.fillText("2s, 7s, 8s, and 10s are magical cards that can be played regardless of whatever is on top of",
+                70, 505
+            )
+            ctx.fillText("the Stack.",
+                70, 525 
+            )   
+            ctx.fillText("When 7s are played, the next card(s) played must be of a value below 7, or magical.",
+                70, 560
+            )
+            ctx.fillText("8s are considered to be invisible/transparent, and the next card(s) played are compared to the",
+                70, 595
+            )
+            ctx.fillText("card beneath the 8(s).",
+                70, 615
+            )
+            ctx.fillText("10s burn the Stack.",
+                70, 650
+            )
+            ctx.fillText("Jokers are magical, and act like 8s, but additionally they prevent other magical cards from",
+                70, 685
+            )
+            ctx.fillText("being on top of them unless they're also a Joker.",
+                70, 705
+            )
+        
+            ctx.textAlign = "right"
+            ctx.textBaseline = "middle"
+            ctx.font = "bold 40px Verdana"
+            ctx.fillText("X", 725, 90)  
+            ctx.closePath()
+        }   
 
     </script>
 </body>
