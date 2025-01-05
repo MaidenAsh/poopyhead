@@ -21,7 +21,7 @@
         }
     </style>
 </head> 
-<body onload="initGame()">
+<body onload="initGame()">                 
     <canvas id="shedCanvas" width="800" height="800"></canvas>
     <!--Every card image is inside this div element-->
     <div style="display:none;">
@@ -87,14 +87,17 @@
         <img id="redBack" src="images/Back Red.png";/>
         <img id="blueBack" src="images/Back Blue.png";/>
 
+        <img id="speakerOff" src="images/speakerOff.png"/>
+        <img id="speakerOn" src="images/speakerOn.png"/>
+
         <audio id="placeCard"><source src="audio/placeCard.mp3" type="audio/mpeg"></audio>
-        <audio id="bgMusic" ><source src ="audio/Jazz BGM.mp3" ></audio>
-        <audio id="burnSFX"><source src="audio/burnStack.mp3"></audio>
+        <audio id="bgMusic"><source src ="audio/Jazz BGM.mp3" ></audio>
+        <audio id="burnSFX"><source src="audio/burnStack.mp3"></audio>                  
         <audio id="forfeitSFX"><source src="audio/forfeit.mp3"></audio>
         <audio id="victory"><source src="audio/victory.mp3"></audio>
         <audio id="defeat"><source src="audio/defeat.mp3"></audio> 
     </div>      
-    <script>
+    <script>                                
         const canvas = document.getElementById('shedCanvas');
         const ctx = canvas.getContext('2d');
         
@@ -109,9 +112,9 @@
         let readyable = true;
         let playable = false;
         let forfeitable = false;
-
         let replayable = false;
-        let showInfo = false
+        let showInfo = false;
+        let bgm = document.getElementById("bgMusic");
         // Arrays for the places the cards can be
         let deck = []; 
         let downcard1 = [];
@@ -127,24 +130,24 @@
 
         // Adjusting volume and speed of sound effects     
         document.getElementById("bgMusic").volume = 0.15;
-        document.getElementById("bgMusic").loop = true;
+        document.getElementById("bgMusic").loop = true;      
         document.getElementById("placeCard").playbackRate = 3.0;
         document.getElementById("burnSFX").playbackRate = 1.25;
         document.getElementById("forfeitSFX").playbackRate = 2.0;    
         document.getElementById("forfeitSFX").volume = 0.75;
 
-        canvas.addEventListener("click",selectCards);   
-        
-        function initGame() {
-            gameRunning = true;     
+        canvas.addEventListener("click",selectCards);       
+
+        function initGame() {                                            
+            gameRunning = true;                 
             swapping = true;
             p1 = true;
             createDeck(deck);
             values.push("Joker"); // Facilitates sorting cards in hand
             deal();                   
             draw();         
-            sortHand();                 
-            renderCards(); 
+            sortHand();                                                 
+            renderCards();  
         }                                                                              
 
         function createDeck(deck) {
@@ -177,7 +180,7 @@
                 deck[positionA] = deck[positionB]
                 deck[positionB] = mid
             }
-        }
+        }   
 
         function deal() {
             // Deals 3 downcards and 3 upcards to each player
@@ -336,12 +339,14 @@
                 //const infoButtonTO = setTimeout(drawInfoButton,300)   
                 drawInfoButton()
             }   
+
+            drawSpeaker()
         }           
 
         function selectCards() {  
             // Handles all clicking, key function for the game loop
+            bgm.play()
             if (gameRunning == true) {
-                document.getElementById("bgMusic").play() 
                 // Initial swap phase
                 if (swapping == true && selected.length<=2) {
                     for (let i = 0; i<upcard1.length; i++) {
@@ -393,7 +398,7 @@
                             swapping = false
                         }   
                     }
-                    //Info button
+                    // Info button
                     if (showInfo == false) {
                         if (event.offsetX > 45 && event.offsetX < 95
                         && event.offsetY > 35 && event.offsetY < 85) {
@@ -404,7 +409,19 @@
                         && event.offsetY > 70 && event.offsetY < 110) {
                             showInfo = false
                         }   
-                    }   
+                    }
+                    // Background music
+                    if (bgm.muted == true) {
+                        if (event.offsetX > 705 && event.offsetX < 775
+                        && event.offsetY > 24 && event.offsetY < 94) {
+                            bgm.muted = false
+                        }       
+                    } else if (bgm.muted == false) {
+                        if (event.offsetX > 705 && event.offsetX < 775
+                        && event.offsetY > 24 && event.offsetY < 94) {
+                            bgm.muted = true
+                        }   
+                    }
                     routine()   
                 }           
                 // Main game phase
@@ -487,6 +504,7 @@
                             forfeit(1)
                         }
                     }
+                    // Info button
                     if (showInfo == false) {
                         if (event.offsetX > 45 && event.offsetX < 95
                         && event.offsetY > 35 && event.offsetY < 85) {
@@ -498,6 +516,18 @@
                             showInfo = false
                         }   
                     }  
+                    // Background music
+                    if (bgm.muted == true) {
+                        if (event.offsetX > 705 && event.offsetX < 775
+                        && event.offsetY > 24 && event.offsetY < 94) {
+                            bgm.muted = false
+                        }       
+                    } else if (bgm.muted == false) {
+                        if (event.offsetX > 705 && event.offsetX < 775
+                        && event.offsetY > 24 && event.offsetY < 94) {
+                            bgm.muted = true
+                        }   
+                    }
                     routine()
                     if (p2 == true || downcard1.length == 0) {
                         const vicTO = setTimeout(checkVictory, 1000) // checkVictory also contains the cue for the bot to move  
@@ -980,7 +1010,7 @@
         function drawInfoButton() {
             // Draws button that leads to info screen
             ctx.beginPath()
-            ctx.arc(70,60,25,0,2*Math.PI)
+            ctx.arc(70,60,24,0,2*Math.PI)
             ctx.strokeStyle = "black"
             ctx.stroke()
             ctx.closePath()
@@ -1083,6 +1113,15 @@
             ctx.fillText("X", 725, 90)  
             ctx.closePath()
         }   
+
+        function drawSpeaker() {
+            // Changes speaker icon depending on whether the music is muted or not
+            if (bgm.muted == false) {
+                ctx.drawImage(document.getElementById("speakerOn"), 705, 24, 70, 70)
+            } else if (bgm.muted == true) {
+                ctx.drawImage(document.getElementById("speakerOff"), 705, 24, 70, 70)
+            }       
+        }       
 
     </script>
 </body>
